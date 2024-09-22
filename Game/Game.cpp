@@ -31,10 +31,15 @@ void Game::initfonts()
 
 void Game::inittext()
 {
-    this->UItext.setFont(this->font);
-    this->UItext.setCharacterSize(24);
-    this->UItext.setFillColor(Color::Blue);
-    this->UItext.setString("NONE");
+    this->UItextCoinsHP.setFont(this->font);
+    this->UItextCoinsHP.setCharacterSize(24);
+    this->UItextCoinsHP.setFillColor(Color::Yellow);
+    this->UItextCoinsHP.setString("NONE");
+
+    this->UItext2.setFont(this->font);
+    this->UItext2.setCharacterSize(24);
+    this->UItext2.setFillColor(Color::Yellow);
+    this->UItext2.setString("NONE");
 }
 
 void Game::initbackground()
@@ -156,10 +161,19 @@ void Game::updateMousePos()
 
 void Game::updateText()
 {
-    stringstream ss;
-    ss << "Coins: " << this->coins << endl
+    stringstream ss1,ss2;
+    //Left Side Text
+    ss1 << "Coins: " << this->coins << endl
     << "Health: " << this->health << endl;
-    this->UItext.setString(ss.str());
+    this->UItextCoinsHP.setString(ss1.str());
+    this->UItextCoinsHP.setPosition(10.f, 10.f);
+
+    //Right Side Text
+    ss2 << "PRE-ALPHA" << endl;
+    this->UItext2.setString(ss2.str());
+    FloatRect textBounds = this->UItext2.getLocalBounds(); //Grote van text 
+    float windowWidth = this->window->getSize().x;         //grote van scherm/window                
+    this->UItext2.setPosition(windowWidth - textBounds.width - 10.f, 10.f);
 }
 
 void Game::updateEnemies()
@@ -254,7 +268,8 @@ void Game::update()
 
 void Game::renderText(RenderTarget& target)
 {
-    target.draw(this->UItext);
+    target.draw(this->UItextCoinsHP);
+    target.draw(this->UItext2);
 }
 
 void Game::renderbackground()

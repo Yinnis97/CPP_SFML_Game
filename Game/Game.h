@@ -37,7 +37,8 @@ private:
 	//Resources
 	Font font;
 	//Text
-	Text UItext;
+	Text UItextCoinsHP;
+	Text UItext2;
 	//Game Logic
 	unsigned coins; //Positief alleen
 	int health;
