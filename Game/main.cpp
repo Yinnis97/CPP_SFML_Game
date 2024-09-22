@@ -9,7 +9,7 @@ int main()
     Game game;
 
     //Loop voor de Game.
-    while (game.GameRunning())
+    while (game.GameRunning() && game.getendgame() == false)
     {
         //Update
         game.update();

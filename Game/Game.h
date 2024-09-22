@@ -2,6 +2,7 @@
 #include <iostream>
 #include <vector>
 #include <ctime>
+#include <sstream>
 #include "SFML\Graphics.hpp"
 #include "SFML\Window.hpp"
 #include "SFML\System.hpp"
@@ -18,6 +19,8 @@ using namespace sf;
    virtual ~Game(); -> 
    virtual zorgt ervoor dat eerst de destructor "activeert" voor de class wordt gedelete.
    Destructor zorgt ervoor dat er geen memory leak is en dat alles mooi wordt opgeruimt.
+
+   mouseview --> float sinds bijna heel het programma met floats werkt waardoor het makkelijker is.
 */
 
 class Game
@@ -30,19 +33,34 @@ private:
 	Event ev;
 	//Mouse Positions
 	Vector2i mousePosWindow;
+	Vector2f mousePosView;
+	//Resources
+	Font font;
+	//Text
+	Text UItext;
 	//Game Logic
+	unsigned coins; //Positief alleen
+	int health;
+	float MoveSpeed;
 	float enemyspawntimer;
 	float enemyspawntimermax;
 	int maxenemies;
-	int coins;
+	bool mouseHeld;
+	bool endgame;
 	//Game Objects
 	vector<Sprite> enemies;
 	Sprite enemy;          
 	Texture enemyTexture;
+	Sprite background;
+	Texture backgroundTexture;
 	//Private Functions
 	void initvariables(); 
 	void initwindow();
+	void initfonts();
+	void inittext();
+	void initbackground();
 	void initenemies();
+	
 
 public:
 	//Constructors / Destructors
@@ -50,14 +68,18 @@ public:
 	virtual ~Game();
 	//Accessors
 	const bool GameRunning() const;
+	const bool getendgame() const;
 	//Functions
 	void spawnEnemy();
 	void pollEvents();
 	void updateMousePos();
+	void updateText();
 	void updateEnemies();
 	void update();
-	void renderEnemies();
-	void render();
 
+	void renderText(RenderTarget& target);
+	void renderbackground();
+	void renderEnemies(RenderTarget& target);
+	void render();
 };
 
