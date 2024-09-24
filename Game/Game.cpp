@@ -180,20 +180,26 @@ void Game::updateText()
     }
     else
     {
- 
-        //this->GameOver.setPosition(windowWidth - textBounds.width - (windowWidth / 2), windowHeight / 2);
-       
-        this->UItextCoinsHP.setString("");
-        this->UItextCoinsHP.setPosition(10.f, 10.f);
-
-        this->UItext2.setString("Game Over");
-        FloatRect textBounds = this->UItext2.getLocalBounds(); //Grote van text 
         float windowWidth = this->window->getSize().x;         //grote van scherm/window   
         float windowHeight = this->window->getSize().y;
+        
+        //Last Score
+        stringstream ss1;
+        ss1 << "Score: " << this->coins;
+        this->UItextCoinsHP.setString(ss1.str());
+        this->UItextCoinsHP.setCharacterSize(40);
+        this->UItextCoinsHP.setFillColor(Color::Yellow);
 
+        FloatRect textBounds1 = this->UItextCoinsHP.getLocalBounds(); //Grote van text
+        this->UItextCoinsHP.setPosition( (windowWidth - textBounds1.width) / 2, (windowHeight / 2) + 140 );
+        
+        //Game Over
+        this->UItext2.setString("Game Over");
         this->UItext2.setCharacterSize(100);
         this->UItext2.setFillColor(Color::Yellow);
-        this->UItext2.setPosition( (windowWidth - textBounds.width) / 2, (windowHeight / 2) );
+
+        FloatRect textBounds2 = this->UItext2.getLocalBounds(); //Grote van text 
+        this->UItext2.setPosition( (windowWidth - textBounds2.width) / 2, (windowHeight / 2) );
     }
 
     
