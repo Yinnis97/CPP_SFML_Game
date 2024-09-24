@@ -79,7 +79,7 @@ public:
 	void update();
 
 	void renderText(RenderTarget& target);
-	void renderbackground();
+	void renderbackground(RenderTarget& target);
 	void renderEnemies(RenderTarget& target);
 	void render();
 };

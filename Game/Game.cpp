@@ -23,19 +23,20 @@ void Game::initwindow()
 
 void Game::initfonts()
 {
-    if(!this->font.loadFromFile("Fonts/PixeloidSans.ttf"));
+    if(!this->font.loadFromFile("Fonts/PixeloidSans.ttf"))
     {
-        cerr << "Error: Kon texture niet laden!" << endl;
+        cerr << "Error: Kon Font Niet Laden!" << endl;
     }
 }
 
 void Game::inittext()
 {
+    //Links
     this->UItextCoinsHP.setFont(this->font);
     this->UItextCoinsHP.setCharacterSize(24);
     this->UItextCoinsHP.setFillColor(Color::Yellow);
     this->UItextCoinsHP.setString("NONE");
-
+    //Rechts
     this->UItext2.setFont(this->font);
     this->UItext2.setCharacterSize(24);
     this->UItext2.setFillColor(Color::Yellow);
@@ -46,7 +47,7 @@ void Game::initbackground()
 {
     if (!this->backgroundTexture.loadFromFile("Textures/background.png"))
     {
-        cerr << "Error: Kon texture niet laden!" << endl;
+        cerr << "Error: Kon Background Texture Niet Laden!" << endl;
     }
     this->background.setTexture(this->backgroundTexture);
 
@@ -59,7 +60,7 @@ void Game::initenemies()
 {
     if (!this->enemyTexture.loadFromFile("Textures/Enemy.png"))
     {
-        cerr << "Error: Kon texture niet laden!" << endl;
+        cerr << "Error: Kon Enemy Texture Niet Laden!" << endl;
     }
     this->enemy.setTexture(this->enemyTexture);
     this->enemy.setScale(2.0f, 2.0f);
@@ -161,19 +162,42 @@ void Game::updateMousePos()
 
 void Game::updateText()
 {
-    stringstream ss1,ss2;
-    //Left Side Text
-    ss1 << "Coins: " << this->coins << endl
-    << "Health: " << this->health << endl;
-    this->UItextCoinsHP.setString(ss1.str());
-    this->UItextCoinsHP.setPosition(10.f, 10.f);
+    if (this->getendgame() == false)
+    {
+        stringstream ss1, ss2;
+        //Left Side Text
+        ss1 << "Coins: " << this->coins << endl
+            << "Health: " << this->health << endl;
+        this->UItextCoinsHP.setString(ss1.str());
+        this->UItextCoinsHP.setPosition(10.f, 10.f);
 
-    //Right Side Text
-    ss2 << "PRE-ALPHA" << endl;
-    this->UItext2.setString(ss2.str());
-    FloatRect textBounds = this->UItext2.getLocalBounds(); //Grote van text 
-    float windowWidth = this->window->getSize().x;         //grote van scherm/window                
-    this->UItext2.setPosition(windowWidth - textBounds.width - 10.f, 10.f);
+        //Right Side Text
+        ss2 << "PRE-ALPHA" << endl;
+        this->UItext2.setString(ss2.str());
+        FloatRect textBounds = this->UItext2.getLocalBounds(); //Grote van text 
+        float windowWidth = this->window->getSize().x;         //grote van scherm/window                
+        this->UItext2.setPosition(windowWidth - textBounds.width - 10.f, 10.f);
+    }
+    else
+    {
+ 
+        //this->GameOver.setPosition(windowWidth - textBounds.width - (windowWidth / 2), windowHeight / 2);
+       
+        this->UItextCoinsHP.setString("");
+        this->UItextCoinsHP.setPosition(10.f, 10.f);
+
+        this->UItext2.setString("Game Over");
+        FloatRect textBounds = this->UItext2.getLocalBounds(); //Grote van text 
+        float windowWidth = this->window->getSize().x;         //grote van scherm/window   
+        float windowHeight = this->window->getSize().y;
+
+        this->UItext2.setCharacterSize(100);
+        this->UItext2.setFillColor(Color::Yellow);
+        this->UItext2.setPosition( (windowWidth - textBounds.width) / 2, (windowHeight / 2) );
+    }
+
+    
+
 }
 
 void Game::updateEnemies()
@@ -201,7 +225,7 @@ void Game::updateEnemies()
         {
             this->enemies.erase(this->enemies.begin() + i);
             this->health -= 1;
-            cout << health << endl;
+            //cout << health << endl;
         }
     }
 
@@ -251,13 +275,14 @@ void Game::updateEnemies()
 void Game::update()
 {
     this->pollEvents();
-
-    if (this->endgame == false)
+    this->updateMousePos();
+    this->updateText();
+    if (this->getendgame() == false)
     {
-        this->updateMousePos();
-        this->updateText();
         this->updateEnemies();
     }
+    
+    
     //End game wnr health 0 of lager is.
     if (this->health <= 0)
     {
@@ -272,9 +297,9 @@ void Game::renderText(RenderTarget& target)
     target.draw(this->UItext2);
 }
 
-void Game::renderbackground()
+void Game::renderbackground(RenderTarget& target)
 {
-    this->window->draw(background);
+    target.draw(background);
 }
 
 void Game::renderEnemies(RenderTarget& target)
@@ -292,8 +317,14 @@ void Game::render()
     //1. Clear Old frame 2. Render Objects 3. Display New Frame
     this->window->clear();
     //Draw Game Objects
-    this->renderbackground();
-    this->renderEnemies(*this->window);
+    this->renderbackground(*this->window);
     this->renderText(*this->window);
+
+    if (this->getendgame() == false)
+    {
+        this->renderEnemies(*this->window);
+    }
+   
+   
     this->window->display();
 }
