@@ -41,6 +41,11 @@ void Game::inittext()
     this->UItext2.setCharacterSize(24);
     this->UItext2.setFillColor(Color::Yellow);
     this->UItext2.setString("NONE");
+    //Restart
+    this->UIRestart.setFont(this->font);
+    this->UIRestart.setCharacterSize(50);
+    this->UIRestart.setFillColor(Color::Yellow);
+    this->UIRestart.setString("");
 }
 
 void Game::initbackground()
@@ -180,7 +185,7 @@ void Game::updateText()
     }
     else
     {
-        float windowWidth = this->window->getSize().x;         //grote van scherm/window   
+        float windowWidth = this->window->getSize().x;           
         float windowHeight = this->window->getSize().y;
         
         //Last Score
@@ -190,7 +195,7 @@ void Game::updateText()
         this->UItextCoinsHP.setCharacterSize(40);
         this->UItextCoinsHP.setFillColor(Color::Yellow);
 
-        FloatRect textBounds1 = this->UItextCoinsHP.getLocalBounds(); //Grote van text
+        FloatRect textBounds1 = this->UItextCoinsHP.getLocalBounds(); 
         this->UItextCoinsHP.setPosition( (windowWidth - textBounds1.width) / 2, (windowHeight / 2) + 140 );
         
         //Game Over
@@ -198,11 +203,14 @@ void Game::updateText()
         this->UItext2.setCharacterSize(100);
         this->UItext2.setFillColor(Color::Yellow);
 
-        FloatRect textBounds2 = this->UItext2.getLocalBounds(); //Grote van text 
+        FloatRect textBounds2 = this->UItext2.getLocalBounds();  
         this->UItext2.setPosition( (windowWidth - textBounds2.width) / 2, (windowHeight / 2) );
-    }
 
-    
+        //Restart
+        this->UIRestart.setString("Restart");
+        FloatRect textBounds3 = this->UIRestart.getLocalBounds();
+        this->UIRestart.setPosition((windowWidth - textBounds3.width) / 2, (windowHeight / 2) + 200 );
+    }
 
 }
 
@@ -301,6 +309,7 @@ void Game::renderText(RenderTarget& target)
 {
     target.draw(this->UItextCoinsHP);
     target.draw(this->UItext2);
+    target.draw(this->UIRestart);
 }
 
 void Game::renderbackground(RenderTarget& target)

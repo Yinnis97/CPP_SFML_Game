@@ -9,6 +9,7 @@
 #include "SFML\Audio.hpp"
 #include "SFML\Network.hpp"
 
+
 using namespace std;
 using namespace sf;
 /*
@@ -37,6 +38,7 @@ private:
 	//Resources
 	Font font;
 	//Text
+	Text UIRestart;
 	Text UItextCoinsHP;
 	Text UItext2;
 	//Game Logic
