@@ -61,6 +61,10 @@ void TextClass::updateText(unsigned coins, int health, bool endgame, const Rende
         FloatRect textBounds = this->UItext2.getLocalBounds();
         float windowWidth = window.getSize().x;
         this->UItext2.setPosition(windowWidth - textBounds.width - 10.f, 10.f);
+
+        //Game Over + Restart Setting string empty for restart.
+        this->UIGameOver.setString("");
+        this->UIRestart.setString("");
     }
     else
     {

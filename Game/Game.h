@@ -47,6 +47,7 @@ private:
 	bool mouseHeld;
 	bool endgame;
 	//Game Objects
+	RectangleShape Restart;
 	vector<Sprite> enemies;
 	Sprite enemy;
 	Texture enemyTexture;
@@ -57,6 +58,7 @@ private:
 	void initwindow();
 	void initbackground();
 	void initenemies();
+	void initrestart();
 
 
 public:
@@ -71,9 +73,11 @@ public:
 	void pollEvents();
 	void updateMousePos();
 	void updateEnemies();
+	void updateRestart();
 	void update();
 
 	void renderbackground(RenderTarget& target);
+	void renderRestart(RenderTarget& target);
 	void renderEnemies(RenderTarget& target);
 	void render();
 };

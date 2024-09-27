@@ -45,6 +45,17 @@ void Game::initenemies()
     this->enemy.setScale(2.0f, 2.0f);
 }
 
+void Game::initrestart()
+{
+    this->Restart.setFillColor(Color::Transparent);
+    this->Restart.setOutlineThickness(8.f);
+    this->Restart.setOutlineColor(Color::Yellow);
+    this->Restart.setSize(Vector2f(220.f, 50.f));
+    float windowWidth = this->window->getSize().x;
+    float windowHeight = this->window->getSize().y;
+    this->Restart.setPosition((windowWidth - this->Restart.getSize().x) / 2, (windowHeight / 2) + 205);  
+}
+
 //Constructors // Destructors
 
 Game::Game()
@@ -53,6 +64,7 @@ Game::Game()
     this->initwindow();
     this->initbackground();
     this->initenemies();
+    this->initrestart();
 }
 
 Game::~Game()
@@ -210,6 +222,33 @@ void Game::updateEnemies()
     }
 }
 
+void Game::updateRestart()
+{
+    //Deleting all enemies 
+    for (int i = 0; i < enemies.size(); i++)
+    {
+      this->enemies.erase(this->enemies.begin() + i);
+    }
+    if (Mouse::isButtonPressed(Mouse::Left))
+    {
+        if (this->mouseHeld == false)
+        {
+            this->mouseHeld = true;
+            
+           if (this->Restart.getGlobalBounds().contains(this->mousePosView))
+           {
+               endgame = false;
+               this->health = 20;
+               this->coins = 0;
+           }
+        }
+    }
+    else
+    {
+        this->mouseHeld = false;
+    }
+}
+
 void Game::update()
 {
     this->pollEvents();
@@ -218,9 +257,14 @@ void Game::update()
 
     if (this->getendgame() == false)
     {
+        //Stop updating enemies wnr endgame.
         this->updateEnemies();
     }
-
+    else
+    {
+        //Update restart screen wnr endgame.
+        this->updateRestart();
+    }
 
     //End game wnr health 0 of lager is.
     if (this->health <= 0)
@@ -234,6 +278,11 @@ void Game::update()
 void Game::renderbackground(RenderTarget& target)
 {
     target.draw(background);
+}
+
+void Game::renderRestart(RenderTarget& target)
+{
+    target.draw(Restart);
 }
 
 void Game::renderEnemies(RenderTarget& target)
@@ -250,14 +299,20 @@ void Game::render()
 {
     //1. Clear Old frame 2. Render Objects 3. Display New Frame
     this->window->clear();
-    //Draw Game Objects
+  
     this->renderbackground(*this->window);
     this->text.renderText(*this->window);
 
-
-    if (this->getendgame() == false)
+    
+    if (this->getendgame() == false) 
     {
+        //Stop met enemies renderen wnr endgame.
         this->renderEnemies(*this->window);
+    }
+    else
+    {
+        //Laat restart scherm zien wnr endgame.
+        this->renderRestart(*this->window);
     }
 
 

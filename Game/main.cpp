@@ -20,5 +20,10 @@ int main()
     return 0;
 }
 
-
+/*
+To Do : 
+-Quit button maken onder de restart button
+-Button class aanmaken voor restart en quit 
+-High scores laten zien van de best games
+*/
 
