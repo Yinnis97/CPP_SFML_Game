@@ -2,7 +2,7 @@
 
 void Game::initvariables()
 {
-	this->window = nullptr;
+    this->window = nullptr;
     this->coins = 0;
     this->enemyspawntimermax = 10.f;
     this->enemyspawntimer = this->enemyspawntimermax;
@@ -15,38 +15,12 @@ void Game::initvariables()
 
 void Game::initwindow()
 {
-	this->videomode = VideoMode::getDesktopMode();
-	this->window = new RenderWindow (this->videomode, "Game V1.0", Style::Fullscreen);
-	this->window->setFramerateLimit(60);
-	this->window->setVerticalSyncEnabled(true);
+    this->videomode = VideoMode::getDesktopMode();
+    this->window = new RenderWindow(this->videomode, "Game V1.0", Style::Fullscreen);
+    this->window->setFramerateLimit(60);
+    this->window->setVerticalSyncEnabled(true);
 }
 
-void Game::initfonts()
-{
-    if(!this->font.loadFromFile("Fonts/PixeloidSans.ttf"))
-    {
-        cerr << "Error: Kon Font Niet Laden!" << endl;
-    }
-}
-
-void Game::inittext()
-{
-    //Links
-    this->UItextCoinsHP.setFont(this->font);
-    this->UItextCoinsHP.setCharacterSize(24);
-    this->UItextCoinsHP.setFillColor(Color::Yellow);
-    this->UItextCoinsHP.setString("NONE");
-    //Rechts
-    this->UItext2.setFont(this->font);
-    this->UItext2.setCharacterSize(24);
-    this->UItext2.setFillColor(Color::Yellow);
-    this->UItext2.setString("NONE");
-    //Restart
-    this->UIRestart.setFont(this->font);
-    this->UIRestart.setCharacterSize(50);
-    this->UIRestart.setFillColor(Color::Yellow);
-    this->UIRestart.setString("");
-}
 
 void Game::initbackground()
 {
@@ -58,7 +32,7 @@ void Game::initbackground()
 
     float X = static_cast<float>(this->window->getSize().x) / this->backgroundTexture.getSize().x;
     float Y = static_cast<float>(this->window->getSize().y) / this->backgroundTexture.getSize().y;
-    this->background.setScale(X,Y);    
+    this->background.setScale(X, Y);
 }
 
 void Game::initenemies()
@@ -75,24 +49,22 @@ void Game::initenemies()
 
 Game::Game()
 {
-	this->initvariables();
-	this->initwindow();
-    this->initfonts();
-    this->inittext();
+    this->initvariables();
+    this->initwindow();
     this->initbackground();
     this->initenemies();
 }
 
 Game::~Game()
 {
-	delete this->window;
+    delete this->window;
 }
 
 //Accessors
 
 const bool Game::GameRunning() const
 {
-	return this->window->isOpen();
+    return this->window->isOpen();
 }
 
 const bool Game::getendgame() const
@@ -109,7 +81,7 @@ void Game::spawnEnemy()
     //Positie wordt bepaald door de grote van het scherm min de breedte van de enemy (zodat hij binnen het scherm spawnt.
     //we moete static int cast omdat rand een int wil.
     //we moete static float cast omdat setPosition een float vraagt.
-   
+
     int type = rand() % 3;
     switch (type)
     {
@@ -127,7 +99,7 @@ void Game::spawnEnemy()
         this->enemy.setScale(2.0f, 2.0f);
         break;
     }
-    
+
     this->enemy.setPosition(
         static_cast<float>(rand() % static_cast<int>(this->window->getSize().x - this->enemy.getGlobalBounds().width)),
         0.f
@@ -144,12 +116,12 @@ void Game::pollEvents()
         switch (this->ev.type)
         {
         case Event::Closed:
-             this->window->close();
-             break;
+            this->window->close();
+            break;
         case Event::KeyPressed:
             if (this->ev.key.code == Keyboard::Escape)
             {
-             this->window->close();
+                this->window->close();
             }
             break;
 
@@ -165,54 +137,6 @@ void Game::updateMousePos()
     this->mousePosView = this->window->mapPixelToCoords(this->mousePosWindow);
 }
 
-void Game::updateText()
-{
-    if (this->getendgame() == false)
-    {
-        stringstream ss1, ss2;
-        //Left Side Text
-        ss1 << "Coins: " << this->coins << endl
-            << "Health: " << this->health << endl;
-        this->UItextCoinsHP.setString(ss1.str());
-        this->UItextCoinsHP.setPosition(10.f, 10.f);
-
-        //Right Side Text
-        ss2 << "PRE-ALPHA" << endl;
-        this->UItext2.setString(ss2.str());
-        FloatRect textBounds = this->UItext2.getLocalBounds(); //Grote van text 
-        float windowWidth = this->window->getSize().x;         //grote van scherm/window                
-        this->UItext2.setPosition(windowWidth - textBounds.width - 10.f, 10.f);
-    }
-    else
-    {
-        float windowWidth = this->window->getSize().x;           
-        float windowHeight = this->window->getSize().y;
-        
-        //Last Score
-        stringstream ss1;
-        ss1 << "Score: " << this->coins;
-        this->UItextCoinsHP.setString(ss1.str());
-        this->UItextCoinsHP.setCharacterSize(40);
-        this->UItextCoinsHP.setFillColor(Color::Yellow);
-
-        FloatRect textBounds1 = this->UItextCoinsHP.getLocalBounds(); 
-        this->UItextCoinsHP.setPosition( (windowWidth - textBounds1.width) / 2, (windowHeight / 2) + 140 );
-        
-        //Game Over
-        this->UItext2.setString("Game Over");
-        this->UItext2.setCharacterSize(100);
-        this->UItext2.setFillColor(Color::Yellow);
-
-        FloatRect textBounds2 = this->UItext2.getLocalBounds();  
-        this->UItext2.setPosition( (windowWidth - textBounds2.width) / 2, (windowHeight / 2) );
-
-        //Restart
-        this->UIRestart.setString("Restart");
-        FloatRect textBounds3 = this->UIRestart.getLocalBounds();
-        this->UIRestart.setPosition((windowWidth - textBounds3.width) / 2, (windowHeight / 2) + 200 );
-    }
-
-}
 
 void Game::updateEnemies()
 {
@@ -290,13 +214,14 @@ void Game::update()
 {
     this->pollEvents();
     this->updateMousePos();
-    this->updateText();
+    this->text.updateText(this->coins, this->health, this->endgame, *this->window);
+
     if (this->getendgame() == false)
     {
         this->updateEnemies();
     }
-    
-    
+
+
     //End game wnr health 0 of lager is.
     if (this->health <= 0)
     {
@@ -305,12 +230,6 @@ void Game::update()
 
 }
 
-void Game::renderText(RenderTarget& target)
-{
-    target.draw(this->UItextCoinsHP);
-    target.draw(this->UItext2);
-    target.draw(this->UIRestart);
-}
 
 void Game::renderbackground(RenderTarget& target)
 {
@@ -328,18 +247,19 @@ void Game::renderEnemies(RenderTarget& target)
 }
 
 void Game::render()
-{ 
+{
     //1. Clear Old frame 2. Render Objects 3. Display New Frame
     this->window->clear();
     //Draw Game Objects
     this->renderbackground(*this->window);
-    this->renderText(*this->window);
+    this->text.renderText(*this->window);
+
 
     if (this->getendgame() == false)
     {
         this->renderEnemies(*this->window);
     }
-   
-   
+
+
     this->window->display();
 }

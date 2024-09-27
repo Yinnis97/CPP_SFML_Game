@@ -8,7 +8,7 @@
 #include "SFML\System.hpp"
 #include "SFML\Audio.hpp"
 #include "SFML\Network.hpp"
-
+#include "Text.h"
 
 using namespace std;
 using namespace sf;
@@ -17,7 +17,7 @@ using namespace sf;
    This-> : zodat je duidelijk kan zien wat deel uit maakt van de class en wat niet.
 
    Info :
-   virtual ~Game(); -> 
+   virtual ~Game(); ->
    virtual zorgt ervoor dat eerst de destructor "activeert" voor de class wordt gedelete.
    Destructor zorgt ervoor dat er geen memory leak is en dat alles mooi wordt opgeruimt.
 
@@ -35,12 +35,8 @@ private:
 	//Mouse Positions
 	Vector2i mousePosWindow;
 	Vector2f mousePosView;
-	//Resources
-	Font font;
-	//Text
-	Text UIRestart;
-	Text UItextCoinsHP;
-	Text UItext2;
+	//Class
+	TextClass text;
 	//Game Logic
 	unsigned coins; //Positief alleen
 	int health;
@@ -52,18 +48,16 @@ private:
 	bool endgame;
 	//Game Objects
 	vector<Sprite> enemies;
-	Sprite enemy;          
+	Sprite enemy;
 	Texture enemyTexture;
 	Sprite background;
 	Texture backgroundTexture;
 	//Private Functions
-	void initvariables(); 
+	void initvariables();
 	void initwindow();
-	void initfonts();
-	void inittext();
 	void initbackground();
 	void initenemies();
-	
+
 
 public:
 	//Constructors / Destructors
@@ -76,13 +70,10 @@ public:
 	void spawnEnemy();
 	void pollEvents();
 	void updateMousePos();
-	void updateText();
 	void updateEnemies();
 	void update();
 
-	void renderText(RenderTarget& target);
 	void renderbackground(RenderTarget& target);
 	void renderEnemies(RenderTarget& target);
 	void render();
 };
-
