@@ -53,7 +53,7 @@ void Game::initrestart()
     this->Restart.setSize(Vector2f(220.f, 50.f));
     float windowWidth = this->window->getSize().x;
     float windowHeight = this->window->getSize().y;
-    this->Restart.setPosition((windowWidth - this->Restart.getSize().x) / 2, (windowHeight / 2) + 205);  
+    this->Restart.setPosition((windowWidth - this->Restart.getSize().x) / 2, (windowHeight / 2) + 165);  
 }
 
 //Constructors // Destructors

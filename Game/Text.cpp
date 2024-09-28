@@ -71,6 +71,11 @@ void TextClass::updateText(unsigned coins, int health, bool endgame, const Rende
         float windowWidth = window.getSize().x;
         float windowHeight = window.getSize().y;
 
+        // Game Over
+        this->UIGameOver.setString("Game Over");
+        FloatRect textBounds2 = this->UIGameOver.getLocalBounds();
+        this->UIGameOver.setPosition((windowWidth - textBounds2.width) / 2, (windowHeight / 2) - 70);
+
         // Last Score
         stringstream ss1;
         ss1 << "Score: " << coins;
@@ -79,17 +84,12 @@ void TextClass::updateText(unsigned coins, int health, bool endgame, const Rende
         this->UItextCoinsHP.setFillColor(Color::Yellow);
 
         FloatRect textBounds1 = this->UItextCoinsHP.getLocalBounds();
-        this->UItextCoinsHP.setPosition((windowWidth - textBounds1.width) / 2, (windowHeight / 2) + 140);
-
-        // Game Over
-        this->UIGameOver.setString("Game Over");
-        FloatRect textBounds2 = this->UIGameOver.getLocalBounds();
-        this->UIGameOver.setPosition((windowWidth - textBounds2.width) / 2, (windowHeight / 2));
+        this->UItextCoinsHP.setPosition((windowWidth - textBounds1.width) / 2, (windowHeight / 2) + 85);
 
         // Restart
         this->UIRestart.setString("Restart");
         FloatRect textBounds3 = this->UIRestart.getLocalBounds();
-        this->UIRestart.setPosition((windowWidth - textBounds3.width) / 2, (windowHeight / 2) + 200);
+        this->UIRestart.setPosition((windowWidth - textBounds3.width) / 2, (windowHeight / 2) + 160);
     }
 }
 

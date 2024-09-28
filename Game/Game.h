@@ -12,17 +12,7 @@
 
 using namespace std;
 using namespace sf;
-/*
-   Main Game class
-   This-> : zodat je duidelijk kan zien wat deel uit maakt van de class en wat niet.
 
-   Info :
-   virtual ~Game(); ->
-   virtual zorgt ervoor dat eerst de destructor "activeert" voor de class wordt gedelete.
-   Destructor zorgt ervoor dat er geen memory leak is en dat alles mooi wordt opgeruimt.
-
-   mouseview --> float sinds bijna heel het programma met floats werkt waardoor het makkelijker is.
-*/
 
 class Game
 {

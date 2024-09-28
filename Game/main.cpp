@@ -25,5 +25,12 @@ To Do :
 -Quit button maken onder de restart button
 -Button class aanmaken voor restart en quit 
 -High scores laten zien van de best games
+-Andere achtergrond bij end screen ?
 */
 
+/*
+  Info :
+   This-> : zodat je duidelijk kan zien wat deel uit maakt van de class en wat niet.
+
+   mouseview : float sinds bijna heel het programma met floats werkt waardoor het makkelijker is.
+*/
