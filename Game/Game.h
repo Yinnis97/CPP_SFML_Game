@@ -9,7 +9,7 @@
 #include "SFML\Audio.hpp"
 #include "SFML\Network.hpp"
 #include "Text.h"
-
+#include "Buttons.h"
 using namespace std;
 using namespace sf;
 
@@ -27,6 +27,7 @@ private:
 	Vector2f mousePosView;
 	//Class
 	TextClass text;
+	Buttons buttons;
 	//Game Logic
 	unsigned coins; //Positief alleen
 	int health;
@@ -48,7 +49,7 @@ private:
 	void initwindow();
 	void initbackground();
 	void initenemies();
-	void initrestart();
+	
 
 
 public:
@@ -63,11 +64,9 @@ public:
 	void pollEvents();
 	void updateMousePos();
 	void updateEnemies();
-	void updateRestart();
 	void update();
 
 	void renderbackground(RenderTarget& target);
-	void renderRestart(RenderTarget& target);
 	void renderEnemies(RenderTarget& target);
 	void render();
 };
