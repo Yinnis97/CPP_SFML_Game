@@ -12,6 +12,7 @@ private:
 	
 	Font font;
 
+	Text UIQuit;
 	Text UIRestart;
 	Text UItextCoinsHP;
 	Text UItext2;

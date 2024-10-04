@@ -11,6 +11,8 @@ void Game::initvariables()
     this->health = 20;
     this->MoveSpeed = 5.0f;
     this->endgame = false;
+    this->Boolquit = false;
+    this->Fullscreen = true;
 }
 
 void Game::initwindow()
@@ -75,6 +77,24 @@ const bool Game::getendgame() const
 
 //Functions 
 
+void Game::toggleFullscreen()
+{
+    delete this->window;
+    this->Fullscreen = !this->Fullscreen;
+
+    if (this->Fullscreen)
+    {
+        this->window = new RenderWindow(this->videomode, "Game V1.0", Style::Fullscreen);
+    }
+    else
+    {
+        this->window = new RenderWindow(this->videomode, "Game V1.0", Style::Close | Style::Resize);
+    }
+
+    this->window->setFramerateLimit(60);
+    this->window->setVerticalSyncEnabled(true);
+}
+
 void Game::spawnEnemy()
 {
     //Zet random positie voor de enemy.
@@ -110,7 +130,7 @@ void Game::spawnEnemy()
 
 void Game::pollEvents()
 {
-    //checking for events
+    //checking voor events
     while (this->window->pollEvent(this->ev))
     {
         switch (this->ev.type)
@@ -123,9 +143,20 @@ void Game::pollEvents()
             {
                 this->window->close();
             }
+
+            if (this->ev.key.code == Keyboard::LAlt)
+            {
+                this->toggleFullscreen();
+            }
             break;
 
         }
+
+    }
+
+    if (Boolquit)
+    {
+        this->window->close();
     }
 }
 
@@ -223,8 +254,9 @@ void Game::update()
     }
     else
     {
-        //Update restart screen wnr endgame.
-        this->buttons.updateRestart(health, coins, enemies, mousePosView, mouseHeld, endgame, *this->window);
+        //Update restart/Quit screen wnr endgame.
+        this->buttons.updateRestart(health, coins, enemies, mousePosView, endgame, *this->window);
+        this->buttons.updateQuit(Boolquit, mousePosView, endgame, *this->window);
     }
 
     //End game wnr health 0 of lager is.
@@ -267,8 +299,9 @@ void Game::render()
     }
     else
     {
-        //Laat restart scherm zien wnr endgame.
+        //Laat restart/quit scherm zien wnr endgame.
         this->buttons.renderRestart(*this->window);
+        this->buttons.renderQuit(*this->window);
     }
 
 

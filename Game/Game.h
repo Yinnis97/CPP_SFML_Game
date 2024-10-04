@@ -16,11 +16,13 @@ using namespace sf;
 
 class Game
 {
+	
 private:
 	//Variables
 	//window
 	RenderWindow* window;
 	VideoMode videomode;
+	bool Fullscreen;
 	Event ev;
 	//Mouse Positions
 	Vector2i mousePosWindow;
@@ -29,6 +31,7 @@ private:
 	TextClass text;
 	Buttons buttons;
 	//Game Logic
+
 	unsigned coins; //Positief alleen
 	int health;
 	float MoveSpeed;
@@ -37,8 +40,8 @@ private:
 	int maxenemies;
 	bool mouseHeld;
 	bool endgame;
+	bool Boolquit;
 	//Game Objects
-	RectangleShape Restart;
 	vector<Sprite> enemies;
 	Sprite enemy;
 	Texture enemyTexture;
@@ -60,6 +63,7 @@ public:
 	const bool GameRunning() const;
 	const bool getendgame() const;
 	//Functions
+	void toggleFullscreen();
 	void spawnEnemy();
 	void pollEvents();
 	void updateMousePos();

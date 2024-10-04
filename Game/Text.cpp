@@ -42,6 +42,11 @@ void TextClass::inittext()
     this->UIGameOver.setCharacterSize(100);
     this->UIGameOver.setFillColor(Color::Yellow);
     this->UIGameOver.setString("");
+    //Quit
+    this->UIQuit.setFont(this->font);
+    this->UIQuit.setCharacterSize(50);
+    this->UIQuit.setFillColor(Color::Yellow);
+    this->UIQuit.setString("");
 }
 
 void TextClass::updateText(unsigned coins, int health, bool endgame, const RenderWindow& window)
@@ -51,6 +56,7 @@ void TextClass::updateText(unsigned coins, int health, bool endgame, const Rende
         stringstream ss1, ss2;
         //Coins And HP
         ss1 << "Coins: " << coins << endl << "Health: " << health << endl;
+        this->UItextCoinsHP.setCharacterSize(24);
         this->UItextCoinsHP.setString(ss1.str());
         this->UItextCoinsHP.setPosition(10.f, 10.f);
 
@@ -62,9 +68,10 @@ void TextClass::updateText(unsigned coins, int health, bool endgame, const Rende
         float windowWidth = window.getSize().x;
         this->UItext2.setPosition(windowWidth - textBounds.width - 10.f, 10.f);
 
-        //Game Over + Restart Setting string empty for restart.
+        //Setting string empty for restart.
         this->UIGameOver.setString("");
         this->UIRestart.setString("");
+        this->UIQuit.setString("");
     }
     else
     {
@@ -90,6 +97,12 @@ void TextClass::updateText(unsigned coins, int health, bool endgame, const Rende
         this->UIRestart.setString("Restart");
         FloatRect textBounds3 = this->UIRestart.getLocalBounds();
         this->UIRestart.setPosition((windowWidth - textBounds3.width) / 2, (windowHeight / 2) + 160);
+
+        // Quit
+        this->UIQuit.setString("Quit");
+        FloatRect textBounds4 = this->UIQuit.getLocalBounds();
+        this->UIQuit.setPosition((windowWidth - textBounds4.width) / 2, (windowHeight / 2) + 237);
+
     }
 }
 
@@ -99,4 +112,5 @@ void TextClass::renderText(RenderTarget& target)
     target.draw(this->UItext2);
     target.draw(this->UIGameOver);
     target.draw(this->UIRestart);
+    target.draw(this->UIQuit);
 }

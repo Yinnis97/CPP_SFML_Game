@@ -22,8 +22,8 @@ int main()
 
 /*
 To Do : 
--Quit button maken onder de restart button
--Button class aanmaken voor restart en quit 
+-Fix Quit button die nie werkt
+-Maak aparte mouseHelds voor quit en restart
 -High scores laten zien van de best games
 -
 */
@@ -33,4 +33,6 @@ To Do :
    This-> : zodat je duidelijk kan zien wat deel uit maakt van de class en wat niet.
 
    mouseview : float sinds bijna heel het programma met floats werkt waardoor het makkelijker is.
+
+   //Polymorphisme : verschillende classes met dezelfde functie met een andere inhoud.
 */
