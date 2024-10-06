@@ -47,9 +47,14 @@ void TextClass::inittext()
     this->UIQuit.setCharacterSize(50);
     this->UIQuit.setFillColor(Color::Yellow);
     this->UIQuit.setString("");
+    //Highscores
+    this->UIHighscores.setFont(this->font);
+    this->UIHighscores.setCharacterSize(50);
+    this->UIHighscores.setFillColor(Color::Yellow);
+    this->UIHighscores.setString("");
 }
 
-void TextClass::updateText(unsigned coins, int health, bool endgame, const RenderWindow& window)
+void TextClass::updateText(unsigned coins, int health, bool endgame, const RenderWindow& window, const Highscores& highscores)
 {
     if (!endgame)
     {
@@ -60,7 +65,7 @@ void TextClass::updateText(unsigned coins, int health, bool endgame, const Rende
         this->UItextCoinsHP.setString(ss1.str());
         this->UItextCoinsHP.setPosition(10.f, 10.f);
 
-        // PRE-ALPHA
+        //PRE-ALPHA
         ss2 << "PRE-ALPHA" << endl;
         this->UItext2.setString(ss2.str());
 
@@ -72,18 +77,19 @@ void TextClass::updateText(unsigned coins, int health, bool endgame, const Rende
         this->UIGameOver.setString("");
         this->UIRestart.setString("");
         this->UIQuit.setString("");
+        this->UIHighscores.setString("");
     }
     else
     {
         float windowWidth = window.getSize().x;
         float windowHeight = window.getSize().y;
 
-        // Game Over
+        //Game Over
         this->UIGameOver.setString("Game Over");
         FloatRect textBounds2 = this->UIGameOver.getLocalBounds();
         this->UIGameOver.setPosition((windowWidth - textBounds2.width) / 2, (windowHeight / 2) - 70);
 
-        // Last Score
+        //Last Score
         stringstream ss1;
         ss1 << "Score: " << coins;
         this->UItextCoinsHP.setString(ss1.str());
@@ -93,12 +99,24 @@ void TextClass::updateText(unsigned coins, int health, bool endgame, const Rende
         FloatRect textBounds1 = this->UItextCoinsHP.getLocalBounds();
         this->UItextCoinsHP.setPosition((windowWidth - textBounds1.width) / 2, (windowHeight / 2) + 85);
 
-        // Restart
+        //Highscores 
+        stringstream ssHighscores;
+        ssHighscores << "Highscores:" << endl;
+        const auto& highscore = highscores.getHighscores();
+        for (int i = 0; i < highscore.size(); ++i)
+        {
+            ssHighscores << i + 1 << ". " << highscore[i] << endl;
+        }
+        this->UIHighscores.setString(ssHighscores.str());
+        this->UIHighscores.setCharacterSize(30);
+        this->UIHighscores.setPosition(10.f, 300.f);
+
+        //Restart
         this->UIRestart.setString("Restart");
         FloatRect textBounds3 = this->UIRestart.getLocalBounds();
         this->UIRestart.setPosition((windowWidth - textBounds3.width) / 2, (windowHeight / 2) + 160);
 
-        // Quit
+        //Quit
         this->UIQuit.setString("Quit");
         FloatRect textBounds4 = this->UIQuit.getLocalBounds();
         this->UIQuit.setPosition((windowWidth - textBounds4.width) / 2, (windowHeight / 2) + 237);
@@ -113,4 +131,5 @@ void TextClass::renderText(RenderTarget& target)
     target.draw(this->UIGameOver);
     target.draw(this->UIRestart);
     target.draw(this->UIQuit);
+    target.draw(this->UIHighscores);
 }

@@ -10,6 +10,7 @@
 #include "SFML\Network.hpp"
 #include "Text.h"
 #include "Buttons.h"
+#include "Highscores.h"
 using namespace std;
 using namespace sf;
 
@@ -27,11 +28,11 @@ private:
 	//Mouse Positions
 	Vector2i mousePosWindow;
 	Vector2f mousePosView;
-	//Class
+	//Classes
 	TextClass text;
 	Buttons buttons;
+	Highscores highscores;
 	//Game Logic
-
 	unsigned coins; //Positief alleen
 	int health;
 	float MoveSpeed;

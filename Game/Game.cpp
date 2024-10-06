@@ -171,7 +171,7 @@ void Game::updateMousePos()
 
 void Game::updateEnemies()
 {
-    //Update de timer van enemie spawn 
+    //Update de timer van enemy spawn 
     if (this->enemies.size() < this->maxenemies)
     {
         if (this->enemyspawntimer >= this->enemyspawntimermax)
@@ -245,15 +245,19 @@ void Game::update()
 {
     this->pollEvents();
     this->updateMousePos();
-    this->text.updateText(this->coins, this->health, this->endgame, *this->window);
+    this->text.updateText(this->coins, this->health, this->endgame, *this->window, highscores);
 
     if (this->getendgame() == false)
     {
         //Stop updating enemies wnr endgame.
         this->updateEnemies();
+        //Zet de Scoreadded terug op false wnr je het spell restart.
+        this->highscores.ScoreAdded = false;
     }
     else
     {
+        //Update de highscores wnr endgame.
+        this->highscores.updatehighscores(coins);
         //Update restart/Quit screen wnr endgame.
         this->buttons.updateRestart(health, coins, enemies, mousePosView, endgame, *this->window);
         this->buttons.updateQuit(Boolquit, mousePosView, endgame, *this->window);
@@ -276,7 +280,6 @@ void Game::renderbackground(RenderTarget& target)
 void Game::renderEnemies(RenderTarget& target)
 {
     //render elke enemy. Iterators/for each loops gaan over elk element van een vector. 
-    //auto : compiler kiest automatisch het juiste type.
     for (auto& e : this->enemies)
     {
         target.draw(e);

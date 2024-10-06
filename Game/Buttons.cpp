@@ -80,7 +80,7 @@ void Buttons::updateQuit(bool& Boolquit, Vector2f mousePosView,  bool& endgame, 
         {
             mouseHeldQuit = true;
             this->Quit.setOutlineColor(Color::Green);
-            cout << "Quit mouseheld is true.\n"; //debug
+            //cout << "Quit mouseheld is true.\n"; //debug
         }
     }
 
@@ -89,7 +89,7 @@ void Buttons::updateQuit(bool& Boolquit, Vector2f mousePosView,  bool& endgame, 
         if (mouseHeldQuit && this->Quit.getGlobalBounds().contains(mousePosView))
         {
             Boolquit = true;
-            std::cout << "Quit button clicked.\n"; //debug 
+            //std::cout << "Quit button clicked.\n"; //debug 
         }
         mouseHeldQuit = false;
         this->Quit.setOutlineColor(Color::Yellow);
