@@ -44,9 +44,9 @@ void Buttons::updateRestart(int& health, unsigned& coins, vector<Sprite>& enemie
     if (Mouse::isButtonPressed(Mouse::Left))
     {
         //Druk en mouseheld wordt true 
-        if (!mouseHeldRestart && this->Restart.getGlobalBounds().contains(mousePosView))
+        if (!this->mouseHeldRestart && this->Restart.getGlobalBounds().contains(mousePosView))
         {
-            mouseHeldRestart = true;
+            this->mouseHeldRestart = true;
             this->Restart.setOutlineColor(Color::Green);
          
         }
@@ -55,14 +55,14 @@ void Buttons::updateRestart(int& health, unsigned& coins, vector<Sprite>& enemie
     else //activeert wnr je los laat
     {
         //omdat mouseheld true is van de vorige frame zal deze activeren bij de frame ne de frame dat de muis is ingedrukt.
-        if (mouseHeldRestart && this->Restart.getGlobalBounds().contains(mousePosView))
+        if (this->mouseHeldRestart && this->Restart.getGlobalBounds().contains(mousePosView))
         {
             endgame = false;
             health = 20;
             coins = 0;
-            std::cout << "Restart button clicked.\n"; //debug
+            //std::cout << "Restart button clicked.\n"; //debug
         }
-        mouseHeldRestart = false;
+        this->mouseHeldRestart = false;
         this->Restart.setOutlineColor(Color::Yellow);
     }
 }
@@ -76,9 +76,9 @@ void Buttons::updateQuit(bool& Boolquit, Vector2f mousePosView,  bool& endgame, 
 
     if (Mouse::isButtonPressed(Mouse::Left))
     {
-        if (!mouseHeldQuit && this->Quit.getGlobalBounds().contains(mousePosView))
+        if (!this->mouseHeldQuit && this->Quit.getGlobalBounds().contains(mousePosView))
         {
-            mouseHeldQuit = true;
+            this->mouseHeldQuit = true;
             this->Quit.setOutlineColor(Color::Green);
             //cout << "Quit mouseheld is true.\n"; //debug
         }
@@ -86,12 +86,12 @@ void Buttons::updateQuit(bool& Boolquit, Vector2f mousePosView,  bool& endgame, 
 
     else 
     {
-        if (mouseHeldQuit && this->Quit.getGlobalBounds().contains(mousePosView))
+        if (this->mouseHeldQuit && this->Quit.getGlobalBounds().contains(mousePosView))
         {
             Boolquit = true;
             //std::cout << "Quit button clicked.\n"; //debug 
         }
-        mouseHeldQuit = false;
+        this->mouseHeldQuit = false;
         this->Quit.setOutlineColor(Color::Yellow);
     }
 }

@@ -12,6 +12,7 @@ class Buttons
 private:
 	RectangleShape Restart;
 	RectangleShape Quit;
+	
 	bool mouseHeldRestart;
 	bool mouseHeldQuit;
 

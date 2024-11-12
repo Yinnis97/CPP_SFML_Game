@@ -36,7 +36,7 @@ void Game::initbackground()
     float Y = static_cast<float>(this->window->getSize().y) / this->backgroundTexture.getSize().y;
     this->background.setScale(X, Y);
 }
-
+/*
 void Game::initenemies()
 {
     if (!this->enemyTexture.loadFromFile("Textures/Enemy.png"))
@@ -46,7 +46,7 @@ void Game::initenemies()
     this->enemy.setTexture(this->enemyTexture);
     this->enemy.setScale(2.0f, 2.0f);
 }
-
+*/
 //Constructors // Destructors
 
 Game::Game()
@@ -54,7 +54,8 @@ Game::Game()
     this->initvariables();
     this->initwindow();
     this->initbackground();
-    this->initenemies();
+    //this->initenemies();
+    enemyEntity.initEntity();
 }
 
 Game::~Game()
@@ -106,26 +107,26 @@ void Game::spawnEnemy()
     switch (type)
     {
     case 0:
-        this->enemy.setScale(1.0f, 1.0f);
+        enemyEntity.sprite.setScale(1.0f, 1.0f);
         break;
     case 1:
-        this->enemy.setScale(2.0f, 2.0f);
+        enemyEntity.sprite.setScale(2.0f, 2.0f);
         break;
     case 2:
-        this->enemy.setScale(3.0f, 3.0f);
+        enemyEntity.sprite.setScale(3.0f, 3.0f);
         break;
 
     default:
-        this->enemy.setScale(2.0f, 2.0f);
+        enemyEntity.sprite.setScale(2.0f, 2.0f);
         break;
     }
 
-    this->enemy.setPosition(
-        static_cast<float>(rand() % static_cast<int>(this->window->getSize().x - this->enemy.getGlobalBounds().width)),
+    enemyEntity.sprite.setPosition(
+        static_cast<float>(rand() % static_cast<int>(this->window->getSize().x - enemyEntity.sprite.getGlobalBounds().width)),
         0.f
     );
     //spawn enemy
-    this->enemies.push_back(this->enemy);
+    this->enemies.push_back(enemyEntity.sprite);
 }
 
 void Game::pollEvents()
@@ -213,18 +214,28 @@ void Game::updateEnemies()
                     //Krijg coins
                     if (this->enemies[i].getScale() == Vector2f(1.0f, 1.0f))
                     {
-                        this->coins += 3;
-                        cout << coins << endl;
+                        if (this->enemies[i].getTexture() == &enemyEntity.Texture)
+                        {
+                            this->coins += 3;
+                            cout << coins << endl;
+                        }
+
                     }
                     else if (this->enemies[i].getScale() == Vector2f(2.0f, 2.0f))
                     {
-                        this->coins += 2;
-                        cout << coins << endl;
+                        if (this->enemies[i].getTexture() == &enemyEntity.Texture)
+                        {
+                            this->coins += 2;
+                            cout << coins << endl;
+                        }
                     }
                     else if (this->enemies[i].getScale() == Vector2f(3.0f, 3.0f))
                     {
-                        this->coins += 1;
-                        cout << coins << endl;
+                        if (this->enemies[i].getTexture() == &enemyEntity.Texture)
+                        {
+                            this->coins += 1;
+                            cout << coins << endl;
+                        }
                     }
 
                     //Verwijder Enemy

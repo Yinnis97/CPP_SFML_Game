@@ -11,6 +11,10 @@
 #include "Text.h"
 #include "Buttons.h"
 #include "Highscores.h"
+#include "Entity.h"
+#include "Enemy.h"
+#include "Friend.h"
+
 using namespace std;
 using namespace sf;
 
@@ -32,6 +36,7 @@ private:
 	TextClass text;
 	Buttons buttons;
 	Highscores highscores;
+	Enemy enemyEntity;
 	//Game Logic
 	unsigned coins; //Positief alleen
 	int health;
@@ -44,15 +49,15 @@ private:
 	bool Boolquit;
 	//Game Objects
 	vector<Sprite> enemies;
-	Sprite enemy;
-	Texture enemyTexture;
+	//Sprite enemy;
+	//Texture enemyTexture;
 	Sprite background;
 	Texture backgroundTexture;
 	//Private Functions
 	void initvariables();
 	void initwindow();
 	void initbackground();
-	void initenemies();
+	//void initenemies();
 	
 
 

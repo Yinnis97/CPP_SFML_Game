@@ -11,7 +11,7 @@ class Highscores
 {
 private:
     vector<unsigned> highscores;
-    const string highscoreFile = "highscores.txt";
+    const string highscoreFile = "Resources/highscores.txt";
     int maxHighscores;
     
 
