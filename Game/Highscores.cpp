@@ -1,21 +1,19 @@
 #include "Highscores.h"
 
-void Highscores::initHighscores()
-{
-    this->ScoreAdded = false;
-    this->maxHighscores = 15;
-    
-}
 
-Highscores::Highscores()
-{
-    initHighscores();
-    //Eerst de scores laden zodat we de oude scores krijgen anders reseten we telkens keer.
-    this->loadHighscores();
-}
 
 Highscores::~Highscores()
 {
+}
+
+bool Highscores::GetScoreAdded()
+{
+    return this->ScoreAdded;
+}
+
+void Highscores::SetScoreAdded(bool Added)
+{
+    this->ScoreAdded = Added;
 }
 
 void Highscores::loadHighscores()

@@ -13,14 +13,16 @@ private:
     vector<unsigned> highscores;
     const string highscoreFile = "Resources/highscores.txt";
     int maxHighscores;
-    
-
-    void initHighscores();
+    bool ScoreAdded;
 
 public:
-    Highscores();
+    Highscores() : ScoreAdded(false), maxHighscores(15)
+    {
+        this->loadHighscores();
+    }
     ~Highscores();
-    bool ScoreAdded;
+    bool GetScoreAdded();
+    void SetScoreAdded(bool Added);
     void loadHighscores();
     void saveHighscores();
     void addHighscore(unsigned coins);
@@ -29,8 +31,4 @@ public:
     const vector<unsigned>& getHighscores() const;
 };
 
-/*
-ScoreAdded moet public zijn omdat game.cpp deze moet kunnen veranderen.
-maxHighscore is het max aantal high scores dat we laten zien.
-
-*/
+//Eerst de scores laden zodat we de oude scores krijgen anders reseten we telkens keer.

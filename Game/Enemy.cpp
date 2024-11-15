@@ -2,7 +2,6 @@
 #include <iostream>
 
 
-
 void Enemy::initEntity(RenderWindow& window)
 {
     if (!this->Texture.loadFromFile("Textures/Enemy.png"))

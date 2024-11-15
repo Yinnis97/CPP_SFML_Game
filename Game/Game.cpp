@@ -94,8 +94,8 @@ void Game::spawnEntity(RenderWindow& window)
         entities.push_back(new Enemy(window,'E'));
         break;
     case 1:
-        //entities.push_back(new Friend(window));
-        entities.push_back(new Enemy(window,'F'));
+        //entities.push_back(new Friend(window,'F'));
+        entities.push_back(new Enemy(window,'E'));
         break;
     default:
         cerr << "Error Spawn Entity.\n";
@@ -251,7 +251,7 @@ void Game::update()
         //Stop updating enemies wnr endgame.
         this->updateEnemies();
         //Zet de Scoreadded terug op false wnr je het spell restart.
-        this->highscores.ScoreAdded = false;
+        this->highscores.SetScoreAdded(false);
     }
     else
     {
