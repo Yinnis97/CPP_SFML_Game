@@ -94,8 +94,7 @@ void Game::spawnEntity(RenderWindow& window)
         entities.push_back(new Enemy(window,'E'));
         break;
     case 1:
-        //entities.push_back(new Friend(window,'F'));
-        entities.push_back(new Enemy(window,'E'));
+        entities.push_back(new Friend(window,'F'));
         break;
     default:
         cerr << "Error Spawn Entity.\n";
@@ -164,9 +163,11 @@ void Game::updateEnemies()
         //checken of de enemy buiten het scherm is.
         if (this->entities[i]->sprite.getPosition().y > this->window->getSize().y)
         {
+            if (this->entities[i]->GetID() == 'E')
+            {
+                this->health -= 1;
+            }
             this->entities.erase(this->entities.begin() + i);
-            this->health -= 1;
-            //cout << health << endl;
         }
     }
 
