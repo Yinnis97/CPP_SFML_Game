@@ -4,9 +4,9 @@
 
 void Friend::initEntity(RenderWindow& window)
 {
-    if (!this->Texture.loadFromFile("Textures/Friend.png"))
+    if (!this->Texture.loadFromFile("Textures/Entity2.png"))
     {
-        cerr << "Error: Kon Friend Texture Niet Laden!" << endl;
+        cerr << "Error: Kon Entity2 Texture Niet Laden!" << endl;
     }
     this->sprite.setTexture(this->Texture);
     this->sprite.setScale(2.0f, 2.0f);

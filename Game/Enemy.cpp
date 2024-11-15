@@ -4,9 +4,9 @@
 
 void Enemy::initEntity(RenderWindow& window)
 {
-    if (!this->Texture.loadFromFile("Textures/Enemy.png"))
+    if (!this->Texture.loadFromFile("Textures/Entity1.png"))
     {
-        cerr << "Error: Kon Enemy Texture Niet Laden!" << endl;
+        cerr << "Error: Kon Entity1 Texture Niet Laden!" << endl;
     }
     this->sprite.setTexture(this->Texture);
     this->sprite.setScale(2.0f, 2.0f);
