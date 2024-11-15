@@ -36,7 +36,8 @@ private:
 	TextClass text;
 	Buttons buttons;
 	Highscores highscores;
-	Enemy enemyEntity;
+	//Enemy enemyEntity;
+	
 	//Game Logic
 	unsigned coins; //Positief alleen
 	int health;
@@ -48,9 +49,8 @@ private:
 	bool endgame;
 	bool Boolquit;
 	//Game Objects
-	vector<Sprite> enemies;
-	//Sprite enemy;
-	//Texture enemyTexture;
+	vector<Entity*> entities;
+	//vector<Sprite> enemies;
 	Sprite background;
 	Texture backgroundTexture;
 	//Private Functions
@@ -70,7 +70,7 @@ public:
 	const bool getendgame() const;
 	//Functions
 	void toggleFullscreen();
-	void spawnEnemy();
+	void spawnEntity(RenderWindow& window);
 	void pollEvents();
 	void updateMousePos();
 	void updateEnemies();

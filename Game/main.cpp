@@ -21,15 +21,12 @@ int main()
 }
 
 /*
-To Do : 
-
-*/
-
-/*
-  Info :
-   This-> : zodat je duidelijk kan zien wat deel uit maakt van de class en wat niet.
-
-   mouseview : float sinds bijna heel het programma met floats werkt waardoor het makkelijker is.
-   auto : compiler kiest automatisch het juiste type.
-   Polymorphisme : verschillende classes met dezelfde functie met een andere inhoud.
+* Abstraction : abastract class -> at least 1 pure virtual function = '= 0'.
+*               bv. vector -> je hoeft niet te weten hoe het intern werkt,
+*               je gebruikt gewoon push_back(),size(),...
+* 
+* Object Composistion : game class heeft andere classes die hun eigen objecten bevatten
+*                       zoals : TextClass, Buttons en Highscores zitten deze classes in de Game class.
+* 
+* Encapsulation : public,private,...
 */

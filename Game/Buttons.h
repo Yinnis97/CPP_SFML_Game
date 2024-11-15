@@ -23,7 +23,7 @@ public:
 	Buttons();
 	virtual ~Buttons();
 
-	void updateRestart(int& health, unsigned& coins, vector<Sprite>& enemies, Vector2f mousePosView, bool& endgame, RenderTarget& target);
+	void updateRestart(int& health, unsigned& coins, Vector2f mousePosView, bool& endgame, RenderTarget& target);
 	void updateQuit(bool& Boolquit, Vector2f mousePosView, bool& endgame, RenderTarget& target);
 
 	void renderQuit(RenderTarget& target);

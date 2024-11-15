@@ -9,13 +9,19 @@ using namespace std;
 
 class Entity
 {
-protected:
-	
+private:
+	char ID;
 public:
+	Entity(char type) : ID(type) {}
+	
 	Sprite sprite;
 	Texture Texture;
-	virtual void initEntity() = 0;
-	//virtual Sprite spawnEnemy() = 0;
 
+	virtual void initEntity(RenderWindow& window) = 0;
+
+	const char GetID()const
+	{
+		return this->ID;
+	}
 };
 

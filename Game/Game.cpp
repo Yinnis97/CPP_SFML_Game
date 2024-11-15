@@ -6,7 +6,7 @@ void Game::initvariables()
     this->coins = 0;
     this->enemyspawntimermax = 10.f;
     this->enemyspawntimer = this->enemyspawntimermax;
-    this->maxenemies = 10;
+    this->maxenemies = 15;
     this->mouseHeld = false;
     this->health = 20;
     this->MoveSpeed = 5.0f;
@@ -36,26 +36,15 @@ void Game::initbackground()
     float Y = static_cast<float>(this->window->getSize().y) / this->backgroundTexture.getSize().y;
     this->background.setScale(X, Y);
 }
-/*
-void Game::initenemies()
-{
-    if (!this->enemyTexture.loadFromFile("Textures/Enemy.png"))
-    {
-        cerr << "Error: Kon Enemy Texture Niet Laden!" << endl;
-    }
-    this->enemy.setTexture(this->enemyTexture);
-    this->enemy.setScale(2.0f, 2.0f);
-}
-*/
-//Constructors // Destructors
+
+
+//Constructors,Destructors
 
 Game::Game()
 {
     this->initvariables();
     this->initwindow();
     this->initbackground();
-    //this->initenemies();
-    enemyEntity.initEntity();
 }
 
 Game::~Game()
@@ -96,37 +85,22 @@ void Game::toggleFullscreen()
     this->window->setVerticalSyncEnabled(true);
 }
 
-void Game::spawnEnemy()
+void Game::spawnEntity(RenderWindow& window)
 {
-    //Zet random positie voor de enemy.
-    //Positie wordt bepaald door de grote van het scherm min de breedte van de enemy (zodat hij binnen het scherm spawnt.
-    //we moete static int cast omdat rand een int wil.
-    //we moete static float cast omdat setPosition een float vraagt.
-
-    int type = rand() % 3;
+    int type = rand() % 2;
     switch (type)
     {
     case 0:
-        enemyEntity.sprite.setScale(1.0f, 1.0f);
+        entities.push_back(new Enemy(window,'E'));
         break;
     case 1:
-        enemyEntity.sprite.setScale(2.0f, 2.0f);
+        //entities.push_back(new Friend(window));
+        entities.push_back(new Enemy(window,'F'));
         break;
-    case 2:
-        enemyEntity.sprite.setScale(3.0f, 3.0f);
-        break;
-
     default:
-        enemyEntity.sprite.setScale(2.0f, 2.0f);
+        cerr << "Error Spawn Entity.\n";
         break;
     }
-
-    enemyEntity.sprite.setPosition(
-        static_cast<float>(rand() % static_cast<int>(this->window->getSize().x - enemyEntity.sprite.getGlobalBounds().width)),
-        0.f
-    );
-    //spawn enemy
-    this->enemies.push_back(enemyEntity.sprite);
 }
 
 void Game::pollEvents()
@@ -150,11 +124,8 @@ void Game::pollEvents()
                 this->toggleFullscreen();
             }
             break;
-
         }
-
     }
-
     if (Boolquit)
     {
         this->window->close();
@@ -173,11 +144,11 @@ void Game::updateMousePos()
 void Game::updateEnemies()
 {
     //Update de timer van enemy spawn 
-    if (this->enemies.size() < this->maxenemies)
+    if (this->entities.size() < this->maxenemies)
     {
         if (this->enemyspawntimer >= this->enemyspawntimermax)
         {
-            this->spawnEnemy();
+            this->spawnEntity(*this->window);
             this->enemyspawntimer = 0.f;
         }
         else
@@ -186,14 +157,14 @@ void Game::updateEnemies()
         }
     }
     //Movement van enemies. Blijft elke enemy naar onder verplaatsen elke frame.
-    for (int i = 0; i < this->enemies.size(); i++)
+    for (int i = 0; i < this->entities.size(); i++)
     {
-        this->enemies[i].move(0.f, this->MoveSpeed);
+        this->entities[i]->sprite.move(0.f, this->MoveSpeed);
 
         //checken of de enemy buiten het scherm is.
-        if (this->enemies[i].getPosition().y > this->window->getSize().y)
+        if (this->entities[i]->sprite.getPosition().y > this->window->getSize().y)
         {
-            this->enemies.erase(this->enemies.begin() + i);
+            this->entities.erase(this->entities.begin() + i);
             this->health -= 1;
             //cout << health << endl;
         }
@@ -206,41 +177,58 @@ void Game::updateEnemies()
         {
             this->mouseHeld = true;
             bool deleted = false;
-            for (int i = 0; i < this->enemies.size() && deleted == false; i++)
+            for (int i = 0; i < this->entities.size() && deleted == false; i++)
             {
                 //contains checkt of de muis binnen de bounds van de enemy is.
-                if (this->enemies[i].getGlobalBounds().contains(this->mousePosView))
+                if (this->entities[i]->sprite.getGlobalBounds().contains(this->mousePosView))
                 {
                     //Krijg coins
-                    if (this->enemies[i].getScale() == Vector2f(1.0f, 1.0f))
+                    if (this->entities[i]->sprite.getScale() == Vector2f(1.0f, 1.0f))
                     {
-                        if (this->enemies[i].getTexture() == &enemyEntity.Texture)
+                        if (this->entities[i]->GetID() == 'E')
                         {
                             this->coins += 3;
-                            cout << coins << endl;
                         }
-
+                        else if (this->entities[i]->GetID() == 'F')
+                        {
+                            if (this->coins >= 1)
+                            {
+                                this->coins -= 1;
+                            }
+                        }
                     }
-                    else if (this->enemies[i].getScale() == Vector2f(2.0f, 2.0f))
+                    else if (this->entities[i]->sprite.getScale() == Vector2f(2.0f, 2.0f))
                     {
-                        if (this->enemies[i].getTexture() == &enemyEntity.Texture)
+                        if (this->entities[i]->GetID() == 'E')
                         {
                             this->coins += 2;
-                            cout << coins << endl;
+                        }
+                        else if (this->entities[i]->GetID() == 'F')
+                        {
+                            if (this->coins >= 2)
+                            {
+                                this->coins -= 2;
+                            }
                         }
                     }
-                    else if (this->enemies[i].getScale() == Vector2f(3.0f, 3.0f))
+                    else if (this->entities[i]->sprite.getScale() == Vector2f(3.0f, 3.0f))
                     {
-                        if (this->enemies[i].getTexture() == &enemyEntity.Texture)
+                        if (this->entities[i]->GetID() == 'E')
                         {
                             this->coins += 1;
-                            cout << coins << endl;
+                        }
+                        else if (this->entities[i]->GetID() == 'F')
+                        {
+                            if (this->coins >= 3)
+                            {
+                                this->coins -= 3;
+                            }
                         }
                     }
 
                     //Verwijder Enemy
                     deleted = true;
-                    this->enemies.erase(this->enemies.begin() + i);
+                    this->entities.erase(this->entities.begin() + i);
                 }
             }
         }
@@ -267,11 +255,16 @@ void Game::update()
     }
     else
     {
+        //Deleting all enemies 
+        for (int i = 0; i < this->entities.size(); i++)
+        {
+            this->entities.erase(this->entities.begin() + i);
+        }
         //Update de highscores wnr endgame.
         this->highscores.updatehighscores(coins);
         //Update restart/Quit screen wnr endgame.
-        this->buttons.updateRestart(health, coins, enemies, mousePosView, endgame, *this->window);
-        this->buttons.updateQuit(Boolquit, mousePosView, endgame, *this->window);
+        this->buttons.updateRestart(this->health, this->coins, this->mousePosView, this->endgame, *this->window);
+        this->buttons.updateQuit(this->Boolquit, this->mousePosView, this->endgame, *this->window);
     }
 
     //End game wnr health 0 of lager is.
@@ -291,9 +284,9 @@ void Game::renderbackground(RenderTarget& target)
 void Game::renderEnemies(RenderTarget& target)
 {
     //render elke enemy. Iterators/for each loops gaan over elk element van een vector. 
-    for (auto& e : this->enemies)
+    for (int i = 0; i < this->entities.size(); i++)
     {
-        target.draw(e);
+        target.draw(this->entities[i]->sprite);
     }
 }
 

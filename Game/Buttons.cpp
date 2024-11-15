@@ -29,17 +29,12 @@ Buttons::~Buttons()
 
 }
 
-void Buttons::updateRestart(int& health, unsigned& coins, vector<Sprite>& enemies, Vector2f mousePosView,  bool& endgame, RenderTarget& target)
+void Buttons::updateRestart(int& health, unsigned& coins, Vector2f mousePosView,  bool& endgame, RenderTarget& target)
 {
     float windowWidth = target.getSize().x;
     float windowHeight = target.getSize().y;
     this->Restart.setPosition((windowWidth - this->Restart.getSize().x) / 2, (windowHeight / 2) + 165); 
 
-    //Deleting all enemies 
-    for (int i = 0; i < enemies.size(); i++)
-    {
-        enemies.erase(enemies.begin() + i);
-    }
 
     if (Mouse::isButtonPressed(Mouse::Left))
     {
