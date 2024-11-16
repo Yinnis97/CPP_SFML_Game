@@ -91,10 +91,12 @@ void Game::spawnEntity(RenderWindow& window)
     switch (type)
     {
     case 0:
-        entities.push_back(new Enemy(window,'E'));
+        entities.push_back(new Enemy(window,'E',1));
         break;
     case 1:
-        entities.push_back(new Friend(window,'F'));
+        entities.push_back(new Friend(window,'F',1));
+        break;
+    case 2:
         break;
     default:
         cerr << "Error Spawn Entity.\n";
@@ -186,50 +188,69 @@ void Game::updateEnemies()
                     //Krijg coins
                     if (this->entities[i]->sprite.getScale() == Vector2f(1.0f, 1.0f))
                     {
-                        if (this->entities[i]->GetID() == 'E')
+                        this->entities[i]->MinHealth(1);
+
+                        if (this->entities[i]->GetHealth() <= 0)
                         {
-                            this->coins += 3;
-                        }
-                        else if (this->entities[i]->GetID() == 'F')
-                        {
-                            if (this->coins >= 1)
+                            if (this->entities[i]->GetID() == 'E')
                             {
-                                this->coins -= 1;
+                                this->coins += 3;
                             }
+                            else if (this->entities[i]->GetID() == 'F')
+                            {
+                                if (this->coins >= 1)
+                                {
+                                    this->coins -= 1;
+                                }
+                            }
+                            this->entities.erase(this->entities.begin() + i);
+                            deleted = true;
                         }
+
                     }
                     else if (this->entities[i]->sprite.getScale() == Vector2f(2.0f, 2.0f))
                     {
-                        if (this->entities[i]->GetID() == 'E')
+                        this->entities[i]->MinHealth(1);
+
+                        if (this->entities[i]->GetHealth() <= 0)
                         {
-                            this->coins += 2;
-                        }
-                        else if (this->entities[i]->GetID() == 'F')
-                        {
-                            if (this->coins >= 2)
+                            if (this->entities[i]->GetID() == 'E')
                             {
-                                this->coins -= 2;
+                                this->coins += 2;
                             }
+                            else if (this->entities[i]->GetID() == 'F')
+                            {
+                                if (this->coins >= 2)
+                                {
+                                    this->coins -= 2;
+                                }
+                            }
+                            this->entities.erase(this->entities.begin() + i);
+                            deleted = true;
                         }
                     }
                     else if (this->entities[i]->sprite.getScale() == Vector2f(3.0f, 3.0f))
                     {
-                        if (this->entities[i]->GetID() == 'E')
+                        this->entities[i]->MinHealth(1);
+
+                        if (this->entities[i]->GetHealth() <= 0)
                         {
-                            this->coins += 1;
-                        }
-                        else if (this->entities[i]->GetID() == 'F')
-                        {
-                            if (this->coins >= 3)
+                            if (this->entities[i]->GetID() == 'E')
                             {
-                                this->coins -= 3;
+                                this->coins += 1;
                             }
+                            else if (this->entities[i]->GetID() == 'F')
+                            {
+                                if (this->coins >= 3)
+                                {
+                                    this->coins -= 3;
+                                }
+                            }
+                            this->entities.erase(this->entities.begin() + i);
+                            deleted = true;
                         }
                     }
-
-                    //Verwijder Enemy
-                    deleted = true;
-                    this->entities.erase(this->entities.begin() + i);
+                    
                 }
             }
         }
@@ -284,7 +305,7 @@ void Game::renderbackground(RenderTarget& target)
 
 void Game::renderEnemies(RenderTarget& target)
 {
-    //render elke enemy. Iterators/for each loops gaan over elk element van een vector. 
+    //render elke enemy sprite.
     for (int i = 0; i < this->entities.size(); i++)
     {
         target.draw(this->entities[i]->sprite);

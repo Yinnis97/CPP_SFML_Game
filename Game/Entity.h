@@ -11,17 +11,17 @@ class Entity
 {
 private:
 	char ID;
+	int Health;
 public:
-	Entity(char type) : ID(type) {}
-	
+	Entity(char type,int hp) : ID(type),Health(hp) {}
+
 	Sprite sprite;
 	Texture Texture;
 
 	virtual void initEntity(RenderWindow& window) = 0;
 
-	const char GetID()const
-	{
-		return this->ID;
-	}
-};
+	const int GetHealth()const;
+	void MinHealth(int min);
+	const char GetID()const;
 
+};

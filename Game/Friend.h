@@ -6,7 +6,7 @@ class Friend : public Entity
 private:
 
 public:
-	Friend(RenderWindow& window, char type) : Entity(type)
+	Friend(RenderWindow& window, char type, int hp) : Entity(type,hp)
     {
         this->initEntity(window);
     }

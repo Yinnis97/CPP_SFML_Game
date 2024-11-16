@@ -9,7 +9,6 @@ void Friend::initEntity(RenderWindow& window)
         cerr << "Error: Kon Entity2 Texture Niet Laden!" << endl;
     }
     this->sprite.setTexture(this->Texture);
-    this->sprite.setScale(2.0f, 2.0f);
 
     int type = rand() % 3;
     switch (type)
