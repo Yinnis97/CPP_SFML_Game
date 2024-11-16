@@ -13,6 +13,8 @@ void Game::initvariables()
     this->endgame = false;
     this->Boolquit = false;
     this->Fullscreen = true;
+    this->deleted = false;
+    this->BossActive = false;
 }
 
 void Game::initwindow()
@@ -87,21 +89,37 @@ void Game::toggleFullscreen()
 
 void Game::spawnEntity(RenderWindow& window)
 {
-    int type = rand() % 2;
-    switch (type)
+    if (this->BossActive == false && this->coins >= 20 && this->coins <= 25)
     {
-    case 0:
-        entities.push_back(new Enemy(window,'E',1));
-        break;
-    case 1:
-        entities.push_back(new Friend(window,'F',1));
-        break;
-    case 2:
-        break;
-    default:
-        cerr << "Error Spawn Entity.\n";
-        break;
+        //Deleting all enemies 
+        for (int i = 0; i < this->entities.size(); i++)
+        {
+            this->entities.erase(this->entities.begin() + i);
+        }
+        
+        //Spawn boss
+        entities.push_back(new Boss(window, 'B', 10));
+        this->BossActive = true;
     }
+    else if (this->BossActive == false)
+    {
+        int type = rand() % 2;
+        switch (type)
+        {
+        case 0:
+            entities.push_back(new Enemy(window, 'E', 1));
+            break;
+        case 1:
+            entities.push_back(new Friend(window, 'F', 1));
+            break;
+        case 2:
+            break;
+        default:
+            cerr << "Error Spawning Entity.\n";
+            break;
+        }
+    }
+
 }
 
 void Game::pollEvents()
@@ -169,6 +187,11 @@ void Game::updateEnemies()
             {
                 this->health -= 1;
             }
+            if (this->entities[i]->GetID() == 'B')
+            {
+                this->health -= 5;
+                this->BossActive = false;
+            }
             this->entities.erase(this->entities.begin() + i);
         }
     }
@@ -179,78 +202,24 @@ void Game::updateEnemies()
         if (this->mouseHeld == false)
         {
             this->mouseHeld = true;
-            bool deleted = false;
-            for (int i = 0; i < this->entities.size() && deleted == false; i++)
+            this->deleted = false;
+            for (int i = 0; i < this->entities.size() && this->deleted == false; i++)
             {
                 //contains checkt of de muis binnen de bounds van de enemy is.
                 if (this->entities[i]->sprite.getGlobalBounds().contains(this->mousePosView))
                 {
-                    //Krijg coins
-                    if (this->entities[i]->sprite.getScale() == Vector2f(1.0f, 1.0f))
+                    if (this->deleted == false)
                     {
-                        this->entities[i]->MinHealth(1);
-
-                        if (this->entities[i]->GetHealth() <= 0)
-                        {
-                            if (this->entities[i]->GetID() == 'E')
-                            {
-                                this->coins += 3;
-                            }
-                            else if (this->entities[i]->GetID() == 'F')
-                            {
-                                if (this->coins >= 1)
-                                {
-                                    this->coins -= 1;
-                                }
-                            }
-                            this->entities.erase(this->entities.begin() + i);
-                            deleted = true;
-                        }
-
+                        this->checkBoss(i);
                     }
-                    else if (this->entities[i]->sprite.getScale() == Vector2f(2.0f, 2.0f))
+                    if (this->deleted == false)
                     {
-                        this->entities[i]->MinHealth(1);
-
-                        if (this->entities[i]->GetHealth() <= 0)
-                        {
-                            if (this->entities[i]->GetID() == 'E')
-                            {
-                                this->coins += 2;
-                            }
-                            else if (this->entities[i]->GetID() == 'F')
-                            {
-                                if (this->coins >= 2)
-                                {
-                                    this->coins -= 2;
-                                }
-                            }
-                            this->entities.erase(this->entities.begin() + i);
-                            deleted = true;
-                        }
+                        this->checkEnemy(i);
                     }
-                    else if (this->entities[i]->sprite.getScale() == Vector2f(3.0f, 3.0f))
+                    if (this->deleted == false)
                     {
-                        this->entities[i]->MinHealth(1);
-
-                        if (this->entities[i]->GetHealth() <= 0)
-                        {
-                            if (this->entities[i]->GetID() == 'E')
-                            {
-                                this->coins += 1;
-                            }
-                            else if (this->entities[i]->GetID() == 'F')
-                            {
-                                if (this->coins >= 3)
-                                {
-                                    this->coins -= 3;
-                                }
-                            }
-                            this->entities.erase(this->entities.begin() + i);
-                            deleted = true;
-                        }
-                    }
-                    
+                        this->checkFriend(i);
+                    }     
                 }
             }
         }
@@ -259,6 +228,109 @@ void Game::updateEnemies()
     else
     {
         this->mouseHeld = false;
+    }
+}
+
+void Game::checkFriend(int i)
+{
+    if (this->entities[i]->GetID() == 'F')
+    {
+        if (this->entities[i]->sprite.getScale() == Vector2f(1.0f, 1.0f))
+        {
+            this->entities[i]->MinHealth(1);
+            if (this->entities[i]->GetHealth() <= 0)
+            {
+                if (this->coins >= 1)
+                {
+                    this->coins -= 1;
+                }
+
+                this->entities.erase(this->entities.begin() + i);
+                this->deleted = true;
+            }
+        }
+        else if (this->entities[i]->sprite.getScale() == Vector2f(2.0f, 2.0f))
+        {
+            this->entities[i]->MinHealth(1);
+            if (this->entities[i]->GetHealth() <= 0)
+            {
+                if (this->coins >= 2)
+                {
+                    this->coins -= 2;
+                }
+
+                this->entities.erase(this->entities.begin() + i);
+                this->deleted = true;
+            }
+
+        }
+        else if (this->entities[i]->sprite.getScale() == Vector2f(3.0f, 3.0f))
+        {
+            this->entities[i]->MinHealth(1);
+            if (this->entities[i]->GetHealth() <= 0)
+            {
+                if (this->coins >= 3)
+                {
+                    this->coins -= 3;
+                }
+
+                this->entities.erase(this->entities.begin() + i);
+                this->deleted = true;
+            }
+
+        }
+    }
+}
+
+void Game::checkEnemy(int i)
+{
+    if (this->entities[i]->GetID() == 'E')
+    {
+        if (this->entities[i]->sprite.getScale() == Vector2f(1.0f, 1.0f))
+        {
+            this->entities[i]->MinHealth(1);
+            if (this->entities[i]->GetHealth() <= 0)
+            {
+                this->coins += 3;
+                this->entities.erase(this->entities.begin() + i);
+                this->deleted = true;
+            }
+        }
+        else if (this->entities[i]->sprite.getScale() == Vector2f(2.0f, 2.0f))
+        {
+            this->entities[i]->MinHealth(1);
+            if (this->entities[i]->GetHealth() <= 0)
+            {
+                this->coins += 2;
+                this->entities.erase(this->entities.begin() + i);
+                this->deleted = true;
+            }
+        }
+        else if (this->entities[i]->sprite.getScale() == Vector2f(3.0f, 3.0f))
+        {
+            this->entities[i]->MinHealth(1);
+            if (this->entities[i]->GetHealth() <= 0)
+            {
+                this->coins += 1;
+                this->entities.erase(this->entities.begin() + i);
+                this->deleted = true;
+            }
+        }
+    }
+}
+
+void Game::checkBoss(int i)
+{
+    if (this->entities[i]->GetID() == 'B')
+    {
+        this->entities[i]->MinHealth(1);
+        if (this->entities[i]->GetHealth() <= 0)
+        {
+            this->coins += 10;
+            this->entities.erase(this->entities.begin() + i);
+            this->deleted = true;
+            this->BossActive = false;
+        }
     }
 }
 

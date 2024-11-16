@@ -48,6 +48,8 @@ private:
 	bool mouseHeld;
 	bool endgame;
 	bool Boolquit;
+	bool deleted;
+	bool BossActive;
 	//Game Objects
 	vector<Entity*> entities;
 	Sprite background;
@@ -66,12 +68,16 @@ public:
 	//Accessors
 	const bool GameRunning() const;
 	const bool getendgame() const;
+	
 	//Functions
 	void toggleFullscreen();
 	void spawnEntity(RenderWindow& window);
 	void pollEvents();
 	void updateMousePos();
 	void updateEnemies();
+	void checkFriend(int i);
+	void checkEnemy(int i);
+	void checkBoss(int i);
 	void update();
 
 	void renderbackground(RenderTarget& target);
