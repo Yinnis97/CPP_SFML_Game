@@ -48,6 +48,7 @@ Game::Game()
     this->initvariables();
     this->initwindow();
     this->initbackground();
+    clock.restart();
 }
 
 Game::~Game()
@@ -90,7 +91,7 @@ void Game::toggleFullscreen()
 
 void Game::spawnEntity()
 {
-    if (this->BossActive == false && this->coins >= 20 && this->coins <= 25)
+    if (this->BossActive == false && this->clock.getElapsedTime().asSeconds() >= 20 && this->clock.getElapsedTime().asSeconds() <= 22)
     {
         //Deleting all enemies 
         this->deleteAllEnemies();

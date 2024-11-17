@@ -20,6 +20,7 @@ private:
 	Text UIGameOver;
 	Text UIHighscores;
 	Text EnemyClicked;
+
 public:
 	TextClass();
 	virtual ~TextClass();

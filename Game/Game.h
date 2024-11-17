@@ -38,7 +38,10 @@ private:
 	TextClass text;
 	Buttons buttons;
 	Highscores highscores;
-	
+
+	//Clock
+	Clock clock;
+
 	//Game Logic
 	unsigned coins; 
 	int health;

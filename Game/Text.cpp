@@ -64,7 +64,7 @@ void TextClass::updateClickText(const RenderWindow& window, Vector2f mousePosVie
 {
 
     this->EnemyClicked.setPosition(mousePosView.x-30,mousePosView.y-20);
-    this->EnemyClicked.setString("-1");
+    this->EnemyClicked.setString("Hit!");
 
 }
 
@@ -93,6 +93,7 @@ void TextClass::updateText(unsigned coins, int health, bool endgame, const Rende
 
         //Set enemy clicked string back to empty
         this->EnemyClicked.setString("");
+        
     }
     else
     {
