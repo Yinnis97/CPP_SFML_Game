@@ -92,10 +92,7 @@ void Game::spawnEntity(RenderWindow& window)
     if (this->BossActive == false && this->coins >= 20 && this->coins <= 25)
     {
         //Deleting all enemies 
-        for (int i = 0; i < this->entities.size(); i++)
-        {
-            this->entities.erase(this->entities.begin() + i);
-        }
+        this->deleteAllEnemies();
         
         //Spawn boss
         entities.push_back(new Boss(window, 'B', 10));
@@ -187,9 +184,9 @@ void Game::updateEnemies()
             {
                 this->health -= 1;
             }
-            if (this->entities[i]->GetID() == 'B')
+            else if (this->entities[i]->GetID() == 'B')
             {
-                this->health -= 5;
+                this->health -= 10;
                 this->BossActive = false;
             }
             this->entities.erase(this->entities.begin() + i);
@@ -334,6 +331,14 @@ void Game::checkBoss(int i)
     }
 }
 
+void Game::deleteAllEnemies()
+{
+    for (int i = 0; i < this->entities.size(); i++)
+    {
+        this->entities.erase(this->entities.begin() + i);
+    }
+}
+
 void Game::update()
 {
     this->pollEvents();
@@ -350,10 +355,7 @@ void Game::update()
     else
     {
         //Deleting all enemies 
-        for (int i = 0; i < this->entities.size(); i++)
-        {
-            this->entities.erase(this->entities.begin() + i);
-        }
+        this->deleteAllEnemies();
         //Update de highscores wnr endgame.
         this->highscores.updatehighscores(coins);
         //Update restart/Quit screen wnr endgame.

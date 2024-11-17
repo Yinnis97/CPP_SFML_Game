@@ -30,3 +30,9 @@ int main()
 * 
 * Encapsulation : public,private,...
 */
+
+/*
+* vragen :
+* 1. wrm verwijderd hij niet alle enemies wnr ik een boss wil spawnen.
+* 2. wrm crashed mijn programma als ik delete entities[i] doe ipv een erase bij het verwijderen van enemies.
+*/

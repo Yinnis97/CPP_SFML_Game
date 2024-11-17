@@ -78,6 +78,7 @@ public:
 	void checkFriend(int i);
 	void checkEnemy(int i);
 	void checkBoss(int i);
+	void deleteAllEnemies();
 	void update();
 
 	void renderbackground(RenderTarget& target);
