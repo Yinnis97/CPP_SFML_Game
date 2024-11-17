@@ -15,6 +15,7 @@ void Game::initvariables()
     this->Fullscreen = true;
     this->deleted = false;
     this->BossActive = false;
+    this->EnemyClicked = false;
 }
 
 void Game::initwindow()
@@ -87,7 +88,7 @@ void Game::toggleFullscreen()
     this->window->setVerticalSyncEnabled(true);
 }
 
-void Game::spawnEntity(RenderWindow& window)
+void Game::spawnEntity()
 {
     if (this->BossActive == false && this->coins >= 20 && this->coins <= 25)
     {
@@ -95,7 +96,7 @@ void Game::spawnEntity(RenderWindow& window)
         this->deleteAllEnemies();
         
         //Spawn boss
-        entities.push_back(new Boss(window, 'B', 10));
+        entities.push_back(new Boss(*this->window, 'B', 10));
         this->BossActive = true;
     }
     else if (this->BossActive == false)
@@ -104,10 +105,10 @@ void Game::spawnEntity(RenderWindow& window)
         switch (type)
         {
         case 0:
-            entities.push_back(new Enemy(window, 'E', 1));
+            entities.push_back(new Enemy(*this->window, 'E', 1));
             break;
         case 1:
-            entities.push_back(new Friend(window, 'F', 1));
+            entities.push_back(new Friend(*this->window, 'F', 1));
             break;
         case 2:
             break;
@@ -148,12 +149,14 @@ void Game::pollEvents()
     }
 }
 
-void Game::updateMousePos()
+const Vector2f Game::GetupdateMousePos()
 {
     //er wordt bijna altijd gewerkt met view omdat we dan met een float kunnen werken.
     //zet onze cursor coord om naar een float vector2 zodat we de coordinaten hebben van onze muis.
     this->mousePosWindow = Mouse::getPosition(*this->window);
     this->mousePosView = this->window->mapPixelToCoords(this->mousePosWindow);
+
+    return this->mousePosView;
 }
 
 
@@ -164,7 +167,7 @@ void Game::updateEnemies()
     {
         if (this->enemyspawntimer >= this->enemyspawntimermax)
         {
-            this->spawnEntity(*this->window);
+            this->spawnEntity();
             this->enemyspawntimer = 0.f;
         }
         else
@@ -203,8 +206,10 @@ void Game::updateEnemies()
             for (int i = 0; i < this->entities.size() && this->deleted == false; i++)
             {
                 //contains checkt of de muis binnen de bounds van de enemy is.
-                if (this->entities[i]->sprite.getGlobalBounds().contains(this->mousePosView))
+                if (this->entities[i]->sprite.getGlobalBounds().contains(this->GetupdateMousePos()))
                 {
+                    this->EnemyClicked = true;
+
                     if (this->deleted == false)
                     {
                         this->checkBoss(i);
@@ -342,8 +347,13 @@ void Game::deleteAllEnemies()
 void Game::update()
 {
     this->pollEvents();
-    this->updateMousePos();
-    this->text.updateText(this->coins, this->health, this->endgame, *this->window, highscores);
+    this->GetupdateMousePos();
+    this->text.updateText(this->coins, this->health, this->endgame, *this->window, highscores, this->GetupdateMousePos());
+    if (this->EnemyClicked)
+    {
+        this->text.updateClickText(*this->window, this->GetupdateMousePos());
+        this->EnemyClicked = false;
+    }
 
     if (this->getendgame() == false)
     {
@@ -359,8 +369,8 @@ void Game::update()
         //Update de highscores wnr endgame.
         this->highscores.updatehighscores(coins);
         //Update restart/Quit screen wnr endgame.
-        this->buttons.updateRestart(this->health, this->coins, this->mousePosView, this->endgame, *this->window);
-        this->buttons.updateQuit(this->Boolquit, this->mousePosView, this->endgame, *this->window);
+        this->buttons.updateRestart(this->health, this->coins, this->GetupdateMousePos(), this->endgame, *this->window);
+        this->buttons.updateQuit(this->Boolquit, this->GetupdateMousePos(), this->endgame, *this->window);
     }
 
     //End game wnr health 0 of lager is.
@@ -389,12 +399,11 @@ void Game::renderEnemies(RenderTarget& target)
 void Game::render()
 {
     //1. Clear Old frame 2. Render Objects 3. Display New Frame
+    //Eerst render background en text als laatste.
     this->window->clear();
   
     this->renderbackground(*this->window);
-    this->text.renderText(*this->window);
 
-    
     if (this->getendgame() == false) 
     {
         //Stop met enemies renderen wnr endgame.
@@ -407,6 +416,7 @@ void Game::render()
         this->buttons.renderQuit(*this->window);
     }
 
+    this->text.renderText(*this->window);
 
     this->window->display();
 }

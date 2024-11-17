@@ -19,13 +19,15 @@ private:
 	Text UItext2;
 	Text UIGameOver;
 	Text UIHighscores;
+	Text EnemyClicked;
 public:
 	TextClass();
 	virtual ~TextClass();
 
 	void initfonts();
 	void inittext();
-	void updateText(unsigned coins, int health, bool endgame, const RenderWindow& window, const Highscores& highscores);
+	void updateClickText(const RenderWindow& window,Vector2f mousePosView);
+	void updateText(unsigned coins, int health, bool endgame, const RenderWindow& window, const Highscores& highscores, Vector2f mousePosView);
 	void renderText(RenderTarget& target);
 
 };

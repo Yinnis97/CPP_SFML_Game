@@ -24,22 +24,23 @@ class Game
 {
 	
 private:
-	//Variables
 	//window
 	RenderWindow* window;
 	VideoMode videomode;
 	bool Fullscreen;
 	Event ev;
+
 	//Mouse Positions
 	Vector2i mousePosWindow;
 	Vector2f mousePosView;
+
 	//Classes
 	TextClass text;
 	Buttons buttons;
 	Highscores highscores;
 	
 	//Game Logic
-	unsigned coins; //Positief alleen
+	unsigned coins; 
 	int health;
 	float MoveSpeed;
 	float enemyspawntimer;
@@ -50,10 +51,14 @@ private:
 	bool Boolquit;
 	bool deleted;
 	bool BossActive;
+	bool EnemyClicked;
+	Clock clock;
+
 	//Game Objects
 	vector<Entity*> entities;
 	Sprite background;
 	Texture backgroundTexture;
+
 	//Private Functions
 	void initvariables();
 	void initwindow();
@@ -62,18 +67,22 @@ private:
 
 
 public:
-	//Constructors / Destructors
+
+	//Constructor
 	Game();
+
+	//Destructor
 	virtual ~Game();
+
 	//Accessors
 	const bool GameRunning() const;
 	const bool getendgame() const;
 	
 	//Functions
 	void toggleFullscreen();
-	void spawnEntity(RenderWindow& window);
+	void spawnEntity();
 	void pollEvents();
-	void updateMousePos();
+	const Vector2f GetupdateMousePos();
 	void updateEnemies();
 	void checkFriend(int i);
 	void checkEnemy(int i);

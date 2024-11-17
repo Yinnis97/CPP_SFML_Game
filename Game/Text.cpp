@@ -52,9 +52,23 @@ void TextClass::inittext()
     this->UIHighscores.setCharacterSize(50);
     this->UIHighscores.setFillColor(Color::Yellow);
     this->UIHighscores.setString("");
+    //Enemy clicked
+    this->EnemyClicked.setFont(this->font);
+    this->EnemyClicked.setCharacterSize(20);
+    this->EnemyClicked.setFillColor(Color::Yellow);
+    this->EnemyClicked.setString("");
+
 }
 
-void TextClass::updateText(unsigned coins, int health, bool endgame, const RenderWindow& window, const Highscores& highscores)
+void TextClass::updateClickText(const RenderWindow& window, Vector2f mousePosView)
+{
+
+    this->EnemyClicked.setPosition(mousePosView.x-30,mousePosView.y-20);
+    this->EnemyClicked.setString("-1");
+
+}
+
+void TextClass::updateText(unsigned coins, int health, bool endgame, const RenderWindow& window, const Highscores& highscores, Vector2f mousePosView)
 {
     if (!endgame)
     {
@@ -78,6 +92,9 @@ void TextClass::updateText(unsigned coins, int health, bool endgame, const Rende
         this->UIRestart.setString("");
         this->UIQuit.setString("");
         this->UIHighscores.setString("");
+
+        //Set enemy clicked string back to empty
+        this->EnemyClicked.setString("");
     }
     else
     {
@@ -126,6 +143,7 @@ void TextClass::updateText(unsigned coins, int health, bool endgame, const Rende
 
 void TextClass::renderText(RenderTarget& target)
 {
+    target.draw(this->EnemyClicked);
     target.draw(this->UItextCoinsHP);
     target.draw(this->UItext2);
     target.draw(this->UIGameOver);
