@@ -28,10 +28,10 @@ void TextClass::inittext()
     this->UItextCoinsHP.setFillColor(Color::Yellow);
     this->UItextCoinsHP.setString("");
     //Rechts
-    this->UItext2.setFont(this->font);
-    this->UItext2.setCharacterSize(24);
-    this->UItext2.setFillColor(Color::Yellow);
-    this->UItext2.setString("");
+    this->UIVersion.setFont(this->font);
+    this->UIVersion.setCharacterSize(24);
+    this->UIVersion.setFillColor(Color::Yellow);
+    this->UIVersion.setString("");
     //Restart
     this->UIRestart.setFont(this->font);
     this->UIRestart.setCharacterSize(50);
@@ -80,14 +80,12 @@ void TextClass::updateText(unsigned coins, int health, bool endgame, const Rende
         this->UItextCoinsHP.setPosition(10.f, 10.f);
 
         //PRE-ALPHA
-        ss2 << "PRE-ALPHA" << endl;
-        this->UItext2.setString(ss2.str());
-
-        FloatRect textBounds = this->UItext2.getLocalBounds();
+        this->UIVersion.setString("PRE-ALPHA");
+        FloatRect textBounds = this->UIVersion.getLocalBounds();
         float windowWidth = window.getSize().x;
-        this->UItext2.setPosition(windowWidth - textBounds.width - 10.f, 10.f);
+        this->UIVersion.setPosition(windowWidth - textBounds.width - 10.f, 10.f);
 
-        //Setting string empty for restart.
+        //Setting strings empty.
         this->UIGameOver.setString("");
         this->UIRestart.setString("");
         this->UIQuit.setString("");
@@ -145,7 +143,7 @@ void TextClass::renderText(RenderTarget& target)
 {
     target.draw(this->EnemyClicked);
     target.draw(this->UItextCoinsHP);
-    target.draw(this->UItext2);
+    target.draw(this->UIVersion);
     target.draw(this->UIGameOver);
     target.draw(this->UIRestart);
     target.draw(this->UIQuit);

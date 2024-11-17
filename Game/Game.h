@@ -52,7 +52,6 @@ private:
 	bool deleted;
 	bool BossActive;
 	bool EnemyClicked;
-	Clock clock;
 
 	//Game Objects
 	vector<Entity*> entities;

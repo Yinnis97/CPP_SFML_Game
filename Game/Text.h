@@ -16,7 +16,7 @@ private:
 	Text UIQuit;
 	Text UIRestart;
 	Text UItextCoinsHP;
-	Text UItext2;
+	Text UIVersion;
 	Text UIGameOver;
 	Text UIHighscores;
 	Text EnemyClicked;
