@@ -55,7 +55,6 @@ void Buttons::updateRestart(int& health, unsigned& coins, Vector2f mousePosView,
             endgame = false;
             health = 20;
             coins = 0;
-            //std::cout << "Restart button clicked.\n"; //debug
         }
         this->mouseHeldRestart = false;
         this->Restart.setOutlineColor(Color::Yellow);

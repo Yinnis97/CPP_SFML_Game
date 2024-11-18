@@ -342,7 +342,12 @@ void Game::deleteAllEnemies()
     for (int i = 0; i < this->entities.size(); i++)
     {
         this->entities.erase(this->entities.begin() + i);
+        if (i == this->entities.size() - 1)
+        {
+            cout << "size-1" << endl;
+        }
     }
+    
 }
 
 void Game::update()

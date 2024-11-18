@@ -15,6 +15,7 @@
 #include "Enemy.h"
 #include "Friend.h"
 #include "Boss.h"
+#include "Player.h"
 
 using namespace std;
 using namespace sf;
