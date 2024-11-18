@@ -15,7 +15,8 @@ private:
 	
 	bool mouseHeldRestart;
 	bool mouseHeldQuit;
-
+	bool ButtonRestartPressed;
+	bool ButtonQuitPressed;
 	void initrestart();
 	void initquit();
 
@@ -23,8 +24,15 @@ public:
 	Buttons();
 	virtual ~Buttons();
 
-	void updateRestart(int& health, unsigned& coins, Vector2f mousePosView, bool& endgame, RenderTarget& target);
-	void updateQuit(bool& Boolquit, Vector2f mousePosView, bool& endgame, RenderTarget& target);
+	//Setter & Getters
+	void SetButtonRestartPressed(bool set);
+	bool GetButtonRestartPressed();
+	void SetButtonQuitPressed(bool set);
+	bool GetButtonQuitPressed();
+
+	//Update
+	void updateRestart(Vector2f mousePosView, RenderTarget& target);
+	void updateQuit(Vector2f mousePosView, RenderTarget& target);
 
 	void renderQuit(RenderTarget& target);
 	void renderRestart(RenderTarget& target);

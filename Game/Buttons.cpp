@@ -7,6 +7,8 @@ void Buttons::initrestart()
     this->Restart.setOutlineColor(Color::Yellow);
     this->Restart.setSize(Vector2f(220.f, 50.f));
     this->mouseHeldRestart = false;
+    this->ButtonRestartPressed = false;
+    this->ButtonQuitPressed = false;
 }
 
 void Buttons::initquit()
@@ -29,7 +31,27 @@ Buttons::~Buttons()
 
 }
 
-void Buttons::updateRestart(int& health, unsigned& coins, Vector2f mousePosView,  bool& endgame, RenderTarget& target)
+void Buttons::SetButtonRestartPressed(bool set)
+{
+    this->ButtonRestartPressed = set;
+}
+
+bool Buttons::GetButtonRestartPressed()
+{
+    return this->ButtonRestartPressed;
+}
+
+void Buttons::SetButtonQuitPressed(bool set)
+{
+    this->ButtonQuitPressed = set;
+}
+
+bool Buttons::GetButtonQuitPressed()
+{
+    return this->ButtonQuitPressed;
+}
+
+void Buttons::updateRestart(Vector2f mousePosView, RenderTarget& target)
 {
     float windowWidth = target.getSize().x;
     float windowHeight = target.getSize().y;
@@ -52,16 +74,15 @@ void Buttons::updateRestart(int& health, unsigned& coins, Vector2f mousePosView,
         //omdat mouseheld true is van de vorige frame zal deze activeren bij de frame ne de frame dat de muis is ingedrukt.
         if (this->mouseHeldRestart && this->Restart.getGlobalBounds().contains(mousePosView))
         {
-            endgame = false;
-            health = 20;
-            coins = 0;
+            
+            this->SetButtonRestartPressed(true);
         }
         this->mouseHeldRestart = false;
         this->Restart.setOutlineColor(Color::Yellow);
     }
 }
 
-void Buttons::updateQuit(bool& Boolquit, Vector2f mousePosView,  bool& endgame, RenderTarget& target)
+void Buttons::updateQuit(Vector2f mousePosView, RenderTarget& target)
 {
     
     float windowWidth = target.getSize().x;
@@ -74,7 +95,6 @@ void Buttons::updateQuit(bool& Boolquit, Vector2f mousePosView,  bool& endgame, 
         {
             this->mouseHeldQuit = true;
             this->Quit.setOutlineColor(Color::Green);
-            //cout << "Quit mouseheld is true.\n"; //debug
         }
     }
 
@@ -82,8 +102,7 @@ void Buttons::updateQuit(bool& Boolquit, Vector2f mousePosView,  bool& endgame, 
     {
         if (this->mouseHeldQuit && this->Quit.getGlobalBounds().contains(mousePosView))
         {
-            Boolquit = true;
-            //std::cout << "Quit button clicked.\n"; //debug 
+            this->SetButtonQuitPressed(true);
         }
         this->mouseHeldQuit = false;
         this->Quit.setOutlineColor(Color::Yellow);

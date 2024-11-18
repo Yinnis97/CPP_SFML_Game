@@ -39,20 +39,18 @@ private:
 	TextClass text;
 	Buttons buttons;
 	Highscores highscores;
+	Player player;
 
 	//Clock
 	Clock clock;
 
 	//Game Logic
-	unsigned coins; 
-	int health;
 	float MoveSpeed;
 	float enemyspawntimer;
 	float enemyspawntimermax;
 	int maxenemies;
 	bool mouseHeld;
 	bool endgame;
-	bool Boolquit;
 	bool deleted;
 	bool BossActive;
 	bool EnemyClicked;
@@ -67,7 +65,6 @@ private:
 	void initwindow();
 	void initbackground();
 	
-
 
 public:
 

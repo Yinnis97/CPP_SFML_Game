@@ -3,15 +3,12 @@
 void Game::initvariables()
 {
     this->window = nullptr;
-    this->coins = 0;
     this->enemyspawntimermax = 10.f;
     this->enemyspawntimer = this->enemyspawntimermax;
     this->maxenemies = 15;
     this->mouseHeld = false;
-    this->health = 20;
     this->MoveSpeed = 5.0f;
     this->endgame = false;
-    this->Boolquit = false;
     this->Fullscreen = true;
     this->deleted = false;
     this->BossActive = false;
@@ -144,10 +141,6 @@ void Game::pollEvents()
             break;
         }
     }
-    if (Boolquit)
-    {
-        this->window->close();
-    }
 }
 
 const Vector2f Game::GetupdateMousePos()
@@ -186,11 +179,11 @@ void Game::updateEnemies()
         {
             if (this->entities[i]->GetID() == 'E')
             {
-                this->health -= 1;
+                this->player.SetHealth(1);
             }
             else if (this->entities[i]->GetID() == 'B')
             {
-                this->health -= 10;
+                this->player.SetHealth(10);
                 this->BossActive = false;
             }
             this->entities.erase(this->entities.begin() + i);
@@ -243,11 +236,11 @@ void Game::checkFriend(int i)
             this->entities[i]->MinHealth(1);
             if (this->entities[i]->GetHealth() <= 0)
             {
-                if (this->coins >= 1)
+                this->player.SetCoins(-1);
+                if (this->player.GetCoins() < 0)
                 {
-                    this->coins -= 1;
+                    this->player.SetCoins(-this->player.GetCoins());
                 }
-
                 this->entities.erase(this->entities.begin() + i);
                 this->deleted = true;
             }
@@ -257,11 +250,11 @@ void Game::checkFriend(int i)
             this->entities[i]->MinHealth(1);
             if (this->entities[i]->GetHealth() <= 0)
             {
-                if (this->coins >= 2)
+                this->player.SetCoins(-2);
+                if (this->player.GetCoins() < 0)
                 {
-                    this->coins -= 2;
+                    this->player.SetCoins(-this->player.GetCoins());
                 }
-
                 this->entities.erase(this->entities.begin() + i);
                 this->deleted = true;
             }
@@ -272,11 +265,11 @@ void Game::checkFriend(int i)
             this->entities[i]->MinHealth(1);
             if (this->entities[i]->GetHealth() <= 0)
             {
-                if (this->coins >= 3)
+                this->player.SetCoins(-3);
+                if (this->player.GetCoins() < 0)
                 {
-                    this->coins -= 3;
+                    this->player.SetCoins(-this->player.GetCoins());
                 }
-
                 this->entities.erase(this->entities.begin() + i);
                 this->deleted = true;
             }
@@ -294,17 +287,17 @@ void Game::checkEnemy(int i)
             this->entities[i]->MinHealth(1);
             if (this->entities[i]->GetHealth() <= 0)
             {
-                this->coins += 3;
+                this->player.SetCoins(3);
                 this->entities.erase(this->entities.begin() + i);
                 this->deleted = true;
             }
         }
         else if (this->entities[i]->sprite.getScale() == Vector2f(2.0f, 2.0f))
         {
-            this->entities[i]->MinHealth(1);
+            this->entities[i]->MinHealth(2);
             if (this->entities[i]->GetHealth() <= 0)
             {
-                this->coins += 2;
+                this->player.SetCoins(3);
                 this->entities.erase(this->entities.begin() + i);
                 this->deleted = true;
             }
@@ -314,7 +307,7 @@ void Game::checkEnemy(int i)
             this->entities[i]->MinHealth(1);
             if (this->entities[i]->GetHealth() <= 0)
             {
-                this->coins += 1;
+                this->player.SetCoins(1);
                 this->entities.erase(this->entities.begin() + i);
                 this->deleted = true;
             }
@@ -329,7 +322,7 @@ void Game::checkBoss(int i)
         this->entities[i]->MinHealth(1);
         if (this->entities[i]->GetHealth() <= 0)
         {
-            this->coins += 10;
+            this->player.SetCoins(10);
             this->entities.erase(this->entities.begin() + i);
             this->deleted = true;
             this->BossActive = false;
@@ -354,7 +347,7 @@ void Game::update()
 {
     this->pollEvents();
     this->GetupdateMousePos();
-    this->text.updateText(this->coins, this->health, this->endgame, *this->window, highscores, this->GetupdateMousePos());
+    this->text.updateText(this->player.GetCoins(), this->player.GetHealth(), this->endgame, *this->window, highscores, this->GetupdateMousePos());
     if (this->EnemyClicked)
     {
         this->text.updateClickText(*this->window, this->GetupdateMousePos());
@@ -372,15 +365,29 @@ void Game::update()
     {
         //Deleting all enemies 
         this->deleteAllEnemies();
+
         //Update de highscores wnr endgame.
-        this->highscores.updatehighscores(coins);
-        //Update restart/Quit screen wnr endgame.
-        this->buttons.updateRestart(this->health, this->coins, this->GetupdateMousePos(), this->endgame, *this->window);
-        this->buttons.updateQuit(this->Boolquit, this->GetupdateMousePos(), this->endgame, *this->window);
+        this->highscores.updatehighscores(this->player.GetCoins());
+
+        //Restart Button
+        this->buttons.updateRestart(this->GetupdateMousePos(), *this->window);
+        if (this->buttons.GetButtonRestartPressed())
+        {
+            this->endgame = false;
+            this->buttons.SetButtonRestartPressed(false);
+            this->player.SetAllToDefault();
+        }
+
+        //Quit Button
+        this->buttons.updateQuit(this->GetupdateMousePos(), *this->window);
+        if (this->buttons.GetButtonQuitPressed())
+        {
+            this->window->close();
+        }
     }
 
     //End game wnr health 0 of lager is.
-    if (this->health <= 0)
+    if (this->player.GetHealth() <= 0)
     {
         this->endgame = true;
     }
