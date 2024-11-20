@@ -34,6 +34,7 @@ public:
 	void updateRestart(Vector2f mousePosView, RenderTarget& target);
 	void updateQuit(Vector2f mousePosView, RenderTarget& target);
 
+	//Render
 	void renderQuit(RenderTarget& target);
 	void renderRestart(RenderTarget& target);
 

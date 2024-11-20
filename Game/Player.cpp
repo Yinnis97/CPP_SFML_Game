@@ -6,7 +6,7 @@ Player::Player()
 	this->SetAllToDefault();
 }
 
-//Getters
+
 const int Player::GetCoins()
 {
 	return this->Coins;
@@ -19,7 +19,7 @@ const int Player::GetHealth()
 
 const int Player::GetBossesKilled()
 {
-	return this->BossesKiled;
+	return this->BossesKilled;
 }
 
 const int Player::GetEnemiesKilled()
@@ -33,28 +33,32 @@ const int Player::GetFriendsKilled()
 }
 
 
-//Setters
-void Player::SetHealth(int value)
+void Player::AddHealth(int value)
+{
+	this->Health = this->Health + value;
+}
+
+void Player::MinHealth(int value)
 {
 	this->Health = this->Health - value;
 }
 
-void Player::SetCoins(int value)
+void Player::AddCoins(int value)
 {
 	this->Coins = this->Coins + value;
 }
 
-void Player::SetBossesKilled(int value)
+void Player::AddBossesKilled(int value)
 {
-	this->BossesKiled = this->BossesKiled + value;
+	this->BossesKilled = this->BossesKilled + value;
 }
 
-void Player::SetEnemiesKilled(int value)
+void Player::AddEnemiesKilled(int value)
 {
 	this->EnemiesKilled = this->EnemiesKilled + value;
 }
 
-void Player::SetFriendsKilled(int value)
+void Player::AddFriendsKilled(int value)
 {
 	this->FriendsKilled = this->FriendsKilled + value;
 }
@@ -65,7 +69,7 @@ void Player::SetAllToDefault()
 {
 	this->Health = 20;
 	this->Coins = 0;
-	this->BossesKiled = 0;
+	this->BossesKilled = 0;
 	this->EnemiesKilled = 0;
 	this->FriendsKilled = 0;
 }

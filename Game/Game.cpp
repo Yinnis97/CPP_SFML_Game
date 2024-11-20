@@ -45,7 +45,7 @@ Game::Game()
     this->initvariables();
     this->initwindow();
     this->initbackground();
-    clock.restart();
+    this->clock.restart();
 }
 
 Game::~Game()
@@ -65,58 +65,26 @@ const bool Game::getendgame() const
     return this->endgame;
 }
 
+const Vector2f Game::GetupdateMousePos()
+{
+    //er wordt bijna altijd gewerkt met view omdat we dan met een float kunnen werken.
+    //zet onze cursor coord om naar een float vector2 zodat we de coordinaten hebben van onze muis.
+    this->mousePosWindow = Mouse::getPosition(*this->window);
+    this->mousePosView = this->window->mapPixelToCoords(this->mousePosWindow);
+
+    return this->mousePosView;
+}
+
+const bool Game::GetBossTimeInterval()
+{
+    if (this->clock.getElapsedTime().asSeconds() >= 20 && this->clock.getElapsedTime().asSeconds() <= 21)
+    {
+        return true;
+    }
+    return false;
+}
 
 //Functions 
-
-void Game::toggleFullscreen()
-{
-    delete this->window;
-    this->Fullscreen = !this->Fullscreen;
-
-    if (this->Fullscreen)
-    {
-        this->window = new RenderWindow(this->videomode, "Game V1.0", Style::Fullscreen);
-    }
-    else
-    {
-        this->window = new RenderWindow(this->videomode, "Game V1.0", Style::Close | Style::Resize);
-    }
-
-    this->window->setFramerateLimit(60);
-    this->window->setVerticalSyncEnabled(true);
-}
-
-void Game::spawnEntity()
-{
-    if (this->BossActive == false && this->clock.getElapsedTime().asSeconds() >= 20 && this->clock.getElapsedTime().asSeconds() <= 22)
-    {
-        //Deleting all enemies 
-        this->deleteAllEnemies();
-        
-        //Spawn boss
-        entities.push_back(new Boss(*this->window, 'B', 10));
-        this->BossActive = true;
-    }
-    else if (this->BossActive == false)
-    {
-        int type = rand() % 2;
-        switch (type)
-        {
-        case 0:
-            entities.push_back(new Enemy(*this->window, 'E', 1));
-            break;
-        case 1:
-            entities.push_back(new Friend(*this->window, 'F', 1));
-            break;
-        case 2:
-            break;
-        default:
-            cerr << "Error Spawning Entity.\n";
-            break;
-        }
-    }
-
-}
 
 void Game::pollEvents()
 {
@@ -143,16 +111,181 @@ void Game::pollEvents()
     }
 }
 
-const Vector2f Game::GetupdateMousePos()
+void Game::toggleFullscreen()
 {
-    //er wordt bijna altijd gewerkt met view omdat we dan met een float kunnen werken.
-    //zet onze cursor coord om naar een float vector2 zodat we de coordinaten hebben van onze muis.
-    this->mousePosWindow = Mouse::getPosition(*this->window);
-    this->mousePosView = this->window->mapPixelToCoords(this->mousePosWindow);
+    delete this->window;
+    this->Fullscreen = !this->Fullscreen;
 
-    return this->mousePosView;
+    if (this->Fullscreen)
+    {
+        this->window = new RenderWindow(this->videomode, "Game V1.0", Style::Fullscreen);
+    }
+    else
+    {
+        this->window = new RenderWindow(this->videomode, "Game V1.0", Style::Close | Style::Resize);
+    }
+
+    this->window->setFramerateLimit(60);
+    this->window->setVerticalSyncEnabled(true);
 }
 
+void Game::spawnEntity()
+{
+    if (this->BossActive == false && this->GetBossTimeInterval())
+    {
+        //Deleting all enemies 
+        this->deleteAllEnemies();
+        
+        //Spawn boss
+        entities.push_back(new Boss(*this->window, 'B', 10));
+        this->BossActive = true;
+    }
+    else if (this->BossActive == false)
+    {
+        int RandomNum = rand() % 100;
+
+        if (RandomNum < 45)
+        {
+            entities.push_back(new Enemy(*this->window, 'E', 1));
+        }
+        else if (RandomNum < 90)
+        {
+            entities.push_back(new Friend(*this->window, 'F', 1));
+        }
+        else
+        {
+            entities.push_back(new Heart(*this->window, 'H', 1));
+        }
+    }
+
+}
+
+void Game::checkFriend(int i)
+{
+    if (this->entities[i]->GetID() == 'F')
+    {
+        if (this->entities[i]->sprite.getScale() == Vector2f(1.0f, 1.0f))
+        {
+            this->entities[i]->MinHealth(1);
+            if (this->entities[i]->GetHealth() <= 0)
+            {
+                this->player.AddCoins(-1);
+                if (this->player.GetCoins() < 0)
+                {
+                    this->player.AddCoins(-this->player.GetCoins());
+                }
+                this->entities.erase(this->entities.begin() + i);
+                this->deleted = true;
+            }
+        }
+        else if (this->entities[i]->sprite.getScale() == Vector2f(2.0f, 2.0f))
+        {
+            this->entities[i]->MinHealth(1);
+            if (this->entities[i]->GetHealth() <= 0)
+            {
+                this->player.AddCoins(-2);
+                if (this->player.GetCoins() < 0)
+                {
+                    this->player.AddCoins(-this->player.GetCoins());
+                }
+                this->entities.erase(this->entities.begin() + i);
+                this->deleted = true;
+            }
+
+        }
+        else if (this->entities[i]->sprite.getScale() == Vector2f(3.0f, 3.0f))
+        {
+            this->entities[i]->MinHealth(1);
+            if (this->entities[i]->GetHealth() <= 0)
+            {
+                this->player.AddCoins(-3);
+                if (this->player.GetCoins() < 0)
+                {
+                    this->player.AddCoins(-this->player.GetCoins());
+                }
+                this->entities.erase(this->entities.begin() + i);
+                this->deleted = true;
+            }
+
+        }
+    }
+}
+
+void Game::checkEnemy(int i)
+{
+    if (this->entities[i]->GetID() == 'E')
+    {
+        if (this->entities[i]->sprite.getScale() == Vector2f(1.0f, 1.0f))
+        {
+            this->entities[i]->MinHealth(1);
+            if (this->entities[i]->GetHealth() <= 0)
+            {
+                this->player.AddCoins(3);
+                this->entities.erase(this->entities.begin() + i);
+                this->deleted = true;
+            }
+        }
+        else if (this->entities[i]->sprite.getScale() == Vector2f(2.0f, 2.0f))
+        {
+            this->entities[i]->MinHealth(2);
+            if (this->entities[i]->GetHealth() <= 0)
+            {
+                this->player.AddCoins(3);
+                this->entities.erase(this->entities.begin() + i);
+                this->deleted = true;
+            }
+        }
+        else if (this->entities[i]->sprite.getScale() == Vector2f(3.0f, 3.0f))
+        {
+            this->entities[i]->MinHealth(1);
+            if (this->entities[i]->GetHealth() <= 0)
+            {
+                this->player.AddCoins(1);
+                this->entities.erase(this->entities.begin() + i);
+                this->deleted = true;
+            }
+        }
+    }
+}
+
+void Game::checkBoss(int i)
+{
+    if (this->entities[i]->GetID() == 'B')
+    {
+        this->entities[i]->MinHealth(1);
+        if (this->entities[i]->GetHealth() <= 0)
+        {
+            this->player.AddCoins(10);
+            this->entities.erase(this->entities.begin() + i);
+            this->deleted = true;
+            this->BossActive = false;
+            this->clock.restart();
+        }
+    }
+}
+
+void Game::checkHeart(int i)
+{
+    if (this->entities[i]->GetID() == 'H')
+    {
+        this->entities[i]->MinHealth(1);
+        if (this->entities[i]->GetHealth() <= 0)
+        {
+            this->player.AddHealth(1);
+            this->entities.erase(this->entities.begin() + i);
+            this->deleted = true;
+        }
+    }
+}
+
+void Game::deleteAllEnemies()
+{
+    for (int i = 0; i < this->entities.size(); i++)
+    {
+        this->entities.erase(this->entities.begin() + i);
+    }
+
+}
 
 void Game::updateEnemies()
 {
@@ -179,11 +312,11 @@ void Game::updateEnemies()
         {
             if (this->entities[i]->GetID() == 'E')
             {
-                this->player.SetHealth(1);
+                this->player.MinHealth(1);
             }
             else if (this->entities[i]->GetID() == 'B')
             {
-                this->player.SetHealth(10);
+                this->player.MinHealth(10);
                 this->BossActive = false;
             }
             this->entities.erase(this->entities.begin() + i);
@@ -215,7 +348,11 @@ void Game::updateEnemies()
                     if (this->deleted == false)
                     {
                         this->checkFriend(i);
-                    }     
+                    }
+                    if (this->deleted == false)
+                    {
+                        this->checkHeart(i);
+                    }
                 }
             }
         }
@@ -225,122 +362,6 @@ void Game::updateEnemies()
     {
         this->mouseHeld = false;
     }
-}
-
-void Game::checkFriend(int i)
-{
-    if (this->entities[i]->GetID() == 'F')
-    {
-        if (this->entities[i]->sprite.getScale() == Vector2f(1.0f, 1.0f))
-        {
-            this->entities[i]->MinHealth(1);
-            if (this->entities[i]->GetHealth() <= 0)
-            {
-                this->player.SetCoins(-1);
-                if (this->player.GetCoins() < 0)
-                {
-                    this->player.SetCoins(-this->player.GetCoins());
-                }
-                this->entities.erase(this->entities.begin() + i);
-                this->deleted = true;
-            }
-        }
-        else if (this->entities[i]->sprite.getScale() == Vector2f(2.0f, 2.0f))
-        {
-            this->entities[i]->MinHealth(1);
-            if (this->entities[i]->GetHealth() <= 0)
-            {
-                this->player.SetCoins(-2);
-                if (this->player.GetCoins() < 0)
-                {
-                    this->player.SetCoins(-this->player.GetCoins());
-                }
-                this->entities.erase(this->entities.begin() + i);
-                this->deleted = true;
-            }
-
-        }
-        else if (this->entities[i]->sprite.getScale() == Vector2f(3.0f, 3.0f))
-        {
-            this->entities[i]->MinHealth(1);
-            if (this->entities[i]->GetHealth() <= 0)
-            {
-                this->player.SetCoins(-3);
-                if (this->player.GetCoins() < 0)
-                {
-                    this->player.SetCoins(-this->player.GetCoins());
-                }
-                this->entities.erase(this->entities.begin() + i);
-                this->deleted = true;
-            }
-
-        }
-    }
-}
-
-void Game::checkEnemy(int i)
-{
-    if (this->entities[i]->GetID() == 'E')
-    {
-        if (this->entities[i]->sprite.getScale() == Vector2f(1.0f, 1.0f))
-        {
-            this->entities[i]->MinHealth(1);
-            if (this->entities[i]->GetHealth() <= 0)
-            {
-                this->player.SetCoins(3);
-                this->entities.erase(this->entities.begin() + i);
-                this->deleted = true;
-            }
-        }
-        else if (this->entities[i]->sprite.getScale() == Vector2f(2.0f, 2.0f))
-        {
-            this->entities[i]->MinHealth(2);
-            if (this->entities[i]->GetHealth() <= 0)
-            {
-                this->player.SetCoins(3);
-                this->entities.erase(this->entities.begin() + i);
-                this->deleted = true;
-            }
-        }
-        else if (this->entities[i]->sprite.getScale() == Vector2f(3.0f, 3.0f))
-        {
-            this->entities[i]->MinHealth(1);
-            if (this->entities[i]->GetHealth() <= 0)
-            {
-                this->player.SetCoins(1);
-                this->entities.erase(this->entities.begin() + i);
-                this->deleted = true;
-            }
-        }
-    }
-}
-
-void Game::checkBoss(int i)
-{
-    if (this->entities[i]->GetID() == 'B')
-    {
-        this->entities[i]->MinHealth(1);
-        if (this->entities[i]->GetHealth() <= 0)
-        {
-            this->player.SetCoins(10);
-            this->entities.erase(this->entities.begin() + i);
-            this->deleted = true;
-            this->BossActive = false;
-        }
-    }
-}
-
-void Game::deleteAllEnemies()
-{
-    for (int i = 0; i < this->entities.size(); i++)
-    {
-        this->entities.erase(this->entities.begin() + i);
-        if (i == this->entities.size() - 1)
-        {
-            cout << "size-1" << endl;
-        }
-    }
-    
 }
 
 void Game::update()
@@ -376,6 +397,7 @@ void Game::update()
             this->endgame = false;
             this->buttons.SetButtonRestartPressed(false);
             this->player.SetAllToDefault();
+            this->clock.restart();
         }
 
         //Quit Button

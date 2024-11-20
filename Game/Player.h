@@ -6,7 +6,7 @@ private:
 	int Coins;
 	int Health;
 	int EnemiesKilled;
-	int BossesKiled;
+	int BossesKilled;
 	int FriendsKilled;
 
 public:
@@ -21,11 +21,12 @@ public:
 	const int GetFriendsKilled();
 
 	//Setters
-	void SetHealth(int value);
-	void SetCoins(int value);
-	void SetBossesKilled(int value);
-	void SetEnemiesKilled(int value);
-	void SetFriendsKilled(int value);
+	void AddHealth(int value);
+	void MinHealth(int value);
+	void AddCoins(int value);
+	void AddBossesKilled(int value);
+	void AddEnemiesKilled(int value);
+	void AddFriendsKilled(int value);
 
 	//Set everything to default value
 	void SetAllToDefault();

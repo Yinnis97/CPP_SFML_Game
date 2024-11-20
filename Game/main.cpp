@@ -25,6 +25,7 @@ int main()
 *               bv. vector -> je hoeft niet te weten hoe het intern werkt,
 *               je gebruikt gewoon push_back(),size(),...
 * 
+* 
 * Object Composistion : game class heeft andere classes die hun eigen objecten bevatten
 *                       zoals : TextClass, Buttons en Highscores zitten deze classes in de Game class.
 * 

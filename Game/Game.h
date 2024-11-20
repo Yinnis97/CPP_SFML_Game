@@ -16,6 +16,7 @@
 #include "Friend.h"
 #include "Boss.h"
 #include "Player.h"
+#include "Heart.h"
 
 using namespace std;
 using namespace sf;
@@ -35,12 +36,6 @@ private:
 	Vector2i mousePosWindow;
 	Vector2f mousePosView;
 
-	//Classes
-	TextClass text;
-	Buttons buttons;
-	Highscores highscores;
-	Player player;
-
 	//Clock
 	Clock clock;
 
@@ -56,6 +51,10 @@ private:
 	bool EnemyClicked;
 
 	//Game Objects
+	TextClass text;
+	Buttons buttons;
+	Highscores highscores;
+	Player player;
 	vector<Entity*> entities;
 	Sprite background;
 	Texture backgroundTexture;
@@ -74,20 +73,23 @@ public:
 	//Destructor
 	virtual ~Game();
 
-	//Accessors
+	//Getters
 	const bool GameRunning() const;
 	const bool getendgame() const;
-	
+	const Vector2f GetupdateMousePos();
+	const bool GetBossTimeInterval();
+
 	//Functions
+	void pollEvents();
 	void toggleFullscreen();
 	void spawnEntity();
-	void pollEvents();
-	const Vector2f GetupdateMousePos();
-	void updateEnemies();
 	void checkFriend(int i);
 	void checkEnemy(int i);
 	void checkBoss(int i);
+	void checkHeart(int i);
 	void deleteAllEnemies();
+
+	void updateEnemies();
 	void update();
 
 	void renderbackground(RenderTarget& target);
