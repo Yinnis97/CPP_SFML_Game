@@ -4,6 +4,7 @@
 #include <string>  
 #include <SFML/Graphics.hpp>
 #include "Highscores.h"
+
 using namespace std;
 using namespace sf;
 
@@ -20,6 +21,9 @@ private:
 	Text UIGameOver;
 	Text UIHighscores;
 	Text EnemyClicked;
+	Text EnemiesKilled;
+	Text BossesKilled;
+	Text FriendsKilled;
 
 public:
 	TextClass();
@@ -28,7 +32,8 @@ public:
 	void initfonts();
 	void inittext();
 	void updateClickText(const RenderWindow& window,Vector2f mousePosView);
-	void updateText(unsigned coins, int health, bool endgame, const RenderWindow& window, const Highscores& highscores, Vector2f mousePosView);
+	void updatePlayerStatsText(int coins, int health, int EnemiesKilled, int BossesKilled, int FriendsKilled, bool endgame, const RenderWindow& window);
+	void updateText(int coins, int health, bool endgame, const RenderWindow& window, const Highscores& highscores);
 	void renderText(RenderTarget& target);
 
 };

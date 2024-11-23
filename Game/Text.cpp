@@ -57,7 +57,21 @@ void TextClass::inittext()
     this->EnemyClicked.setCharacterSize(20);
     this->EnemyClicked.setFillColor(Color::Yellow);
     this->EnemyClicked.setString("");
-
+    //EnemiesKilled
+    this->EnemiesKilled.setFont(this->font);
+    this->EnemiesKilled.setCharacterSize(24);
+    this->EnemiesKilled.setFillColor(Color::Yellow);
+    this->EnemiesKilled.setString("");
+    //BossesKilled
+    this->BossesKilled.setFont(this->font);
+    this->BossesKilled.setCharacterSize(24);
+    this->BossesKilled.setFillColor(Color::Yellow);
+    this->BossesKilled.setString("");
+    //FriendsKilled
+    this->FriendsKilled.setFont(this->font);
+    this->FriendsKilled.setCharacterSize(24);
+    this->FriendsKilled.setFillColor(Color::Yellow);
+    this->FriendsKilled.setString("");
 }
 
 void TextClass::updateClickText(const RenderWindow& window, Vector2f mousePosView)
@@ -65,20 +79,57 @@ void TextClass::updateClickText(const RenderWindow& window, Vector2f mousePosVie
 
     this->EnemyClicked.setPosition(mousePosView.x-30,mousePosView.y-20);
     this->EnemyClicked.setString("Hit!");
-
+    
 }
 
-void TextClass::updateText(unsigned coins, int health, bool endgame, const RenderWindow& window, const Highscores& highscores, Vector2f mousePosView)
+void TextClass::updatePlayerStatsText(int coins, int health, int EnemiesKilled, int BossesKilled, int FriendsKilled, bool endgame, const RenderWindow& window)
 {
     if (!endgame)
     {
-        stringstream ss1, ss2;
+        stringstream ss1, ss2, ss3, ss4, ss5;
         //Coins And HP
         ss1 << "Coins: " << coins << endl << "Health: " << health << endl;
         this->UItextCoinsHP.setCharacterSize(24);
         this->UItextCoinsHP.setString(ss1.str());
         this->UItextCoinsHP.setPosition(10.f, 10.f);
+        //EnemiesKilled
+        ss3 << "Enemies Killed : " << EnemiesKilled << endl;
+        this->EnemiesKilled.setCharacterSize(24);
+        this->EnemiesKilled.setString(ss3.str());
+        this->EnemiesKilled.setPosition(10.f, 100.f);
+        //BossesKilled
+        ss4 << "Bosses Killed  : " << BossesKilled << endl;
+        this->BossesKilled.setCharacterSize(24);
+        this->BossesKilled.setString(ss4.str());
+        this->BossesKilled.setPosition(10.f, 125.f);
+        //FriendsKilled
+        ss5 << "Friends Killed  : " << FriendsKilled << endl;
+        this->FriendsKilled.setCharacterSize(24);
+        this->FriendsKilled.setString(ss5.str());
+        this->FriendsKilled.setPosition(10.f, 150.f);
+    }
+    else
+    {
+        float windowWidth = window.getSize().x;
+        float windowHeight = window.getSize().y;
 
+        //Last Score
+        stringstream ss1;
+        ss1 << "Score: " << coins;
+        this->UItextCoinsHP.setString(ss1.str());
+        this->UItextCoinsHP.setCharacterSize(40);
+        this->UItextCoinsHP.setFillColor(Color::Yellow);
+
+        FloatRect textBounds1 = this->UItextCoinsHP.getLocalBounds();
+        this->UItextCoinsHP.setPosition((windowWidth - textBounds1.width) / 2, (windowHeight / 2) + 85);
+    }
+
+}
+
+void TextClass::updateText(int coins, int health, bool endgame, const RenderWindow& window, const Highscores& highscores)
+{
+    if (!endgame)
+    {
         //PRE-ALPHA
         this->UIVersion.setString("PRE-ALPHA");
         FloatRect textBounds = this->UIVersion.getLocalBounds();
@@ -104,16 +155,6 @@ void TextClass::updateText(unsigned coins, int health, bool endgame, const Rende
         this->UIGameOver.setString("Game Over");
         FloatRect textBounds2 = this->UIGameOver.getLocalBounds();
         this->UIGameOver.setPosition((windowWidth - textBounds2.width) / 2, (windowHeight / 2) - 70);
-
-        //Last Score
-        stringstream ss1;
-        ss1 << "Score: " << coins;
-        this->UItextCoinsHP.setString(ss1.str());
-        this->UItextCoinsHP.setCharacterSize(40);
-        this->UItextCoinsHP.setFillColor(Color::Yellow);
-
-        FloatRect textBounds1 = this->UItextCoinsHP.getLocalBounds();
-        this->UItextCoinsHP.setPosition((windowWidth - textBounds1.width) / 2, (windowHeight / 2) + 85);
 
         //Highscores 
         stringstream ssHighscores;
@@ -142,6 +183,9 @@ void TextClass::updateText(unsigned coins, int health, bool endgame, const Rende
 
 void TextClass::renderText(RenderTarget& target)
 {
+    target.draw(this->EnemiesKilled);
+    target.draw(this->BossesKilled);
+    target.draw(this->FriendsKilled);
     target.draw(this->EnemyClicked);
     target.draw(this->UItextCoinsHP);
     target.draw(this->UIVersion);

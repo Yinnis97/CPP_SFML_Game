@@ -13,14 +13,13 @@ public:
 
 	Player();
 
-	//Getters
+	
 	const int GetCoins();
 	const int GetHealth();
 	const int GetBossesKilled();
 	const int GetEnemiesKilled();
 	const int GetFriendsKilled();
-
-	//Setters
+	
 	void AddHealth(int value);
 	void MinHealth(int value);
 	void AddCoins(int value);

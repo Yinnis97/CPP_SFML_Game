@@ -176,6 +176,7 @@ void Game::checkFriend(int i)
                 }
                 this->entities.erase(this->entities.begin() + i);
                 this->deleted = true;
+                this->player.AddFriendsKilled(1);
             }
         }
         else if (this->entities[i]->sprite.getScale() == Vector2f(2.0f, 2.0f))
@@ -190,6 +191,7 @@ void Game::checkFriend(int i)
                 }
                 this->entities.erase(this->entities.begin() + i);
                 this->deleted = true;
+                this->player.AddFriendsKilled(1);
             }
 
         }
@@ -205,6 +207,7 @@ void Game::checkFriend(int i)
                 }
                 this->entities.erase(this->entities.begin() + i);
                 this->deleted = true;
+                this->player.AddFriendsKilled(1);
             }
 
         }
@@ -223,6 +226,7 @@ void Game::checkEnemy(int i)
                 this->player.AddCoins(3);
                 this->entities.erase(this->entities.begin() + i);
                 this->deleted = true;
+                this->player.AddEnemiesKilled(1);
             }
         }
         else if (this->entities[i]->sprite.getScale() == Vector2f(2.0f, 2.0f))
@@ -233,6 +237,7 @@ void Game::checkEnemy(int i)
                 this->player.AddCoins(3);
                 this->entities.erase(this->entities.begin() + i);
                 this->deleted = true;
+                this->player.AddEnemiesKilled(1);
             }
         }
         else if (this->entities[i]->sprite.getScale() == Vector2f(3.0f, 3.0f))
@@ -243,6 +248,7 @@ void Game::checkEnemy(int i)
                 this->player.AddCoins(1);
                 this->entities.erase(this->entities.begin() + i);
                 this->deleted = true;
+                this->player.AddEnemiesKilled(1);
             }
         }
     }
@@ -255,6 +261,7 @@ void Game::checkBoss(int i)
         this->entities[i]->MinHealth(1);
         if (this->entities[i]->GetHealth() <= 0)
         {
+            this->player.AddBossesKilled(1);
             this->player.AddCoins(10);
             this->entities.erase(this->entities.begin() + i);
             this->deleted = true;
@@ -368,7 +375,9 @@ void Game::update()
 {
     this->pollEvents();
     this->GetupdateMousePos();
-    this->text.updateText(this->player.GetCoins(), this->player.GetHealth(), this->endgame, *this->window, highscores, this->GetupdateMousePos());
+    this->text.updatePlayerStatsText(this->player.GetCoins(), this->player.GetHealth(), this->player.GetEnemiesKilled(), this->player.GetBossesKilled(), this->player.GetFriendsKilled(), this->endgame, *this->window);
+    this->text.updateText(this->player.GetCoins(), this->player.GetHealth(), this->endgame, *this->window, highscores);
+    
     if (this->EnemyClicked)
     {
         this->text.updateClickText(*this->window, this->GetupdateMousePos());
@@ -415,7 +424,6 @@ void Game::update()
     }
 
 }
-
 
 void Game::renderbackground(RenderTarget& target)
 {
