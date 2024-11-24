@@ -12,14 +12,16 @@ class Entity
 private:
 	char ID;
 	int Health;
+	float Speed;
 public:
-	Entity(char type,int hp) : ID(type),Health(hp) {}
+	Entity(char type,int hp,float speed) : ID(type),Health(hp),Speed(speed) {}
 
 	Sprite sprite;
 	Texture Texture;
 
 	virtual void initEntity(RenderWindow& window) = 0;
 
+	const float GetSpeed()const;
 	const int GetHealth()const;
 	void MinHealth(int min);
 	const char GetID()const;

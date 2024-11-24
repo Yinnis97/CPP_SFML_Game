@@ -7,7 +7,6 @@ void Game::initvariables()
     this->enemyspawntimer = this->enemyspawntimermax;
     this->maxenemies = 15;
     this->mouseHeld = false;
-    this->MoveSpeed = 5.0f;
     this->endgame = false;
     this->Fullscreen = true;
     this->deleted = false;
@@ -137,7 +136,7 @@ void Game::spawnEntity()
         this->deleteAllEnemies();
         
         //Spawn boss
-        entities.push_back(new Boss(*this->window, 'B', 10));
+        entities.push_back(new Boss(*this->window, 'B', 10, 5.0f));
         this->BossActive = true;
     }
     else if (this->BossActive == false)
@@ -146,15 +145,15 @@ void Game::spawnEntity()
 
         if (RandomNum < 45)
         {
-            entities.push_back(new Enemy(*this->window, 'E', 1));
+            entities.push_back(new Enemy(*this->window, 'E', 1, 5.0f));
         }
         else if (RandomNum < 90)
         {
-            entities.push_back(new Friend(*this->window, 'F', 1));
+            entities.push_back(new Friend(*this->window, 'F', 1, 5.0f));
         }
         else
         {
-            entities.push_back(new Heart(*this->window, 'H', 1));
+            entities.push_back(new Heart(*this->window, 'H', 1, 5.0f));
         }
     }
 
@@ -312,8 +311,9 @@ void Game::updateEnemies()
     //Movement van enemies. Blijft elke enemy naar onder verplaatsen elke frame.
     for (int i = 0; i < this->entities.size(); i++)
     {
-        this->entities[i]->sprite.move(0.f, this->MoveSpeed);
-
+        //Move enemy 
+        this->entities[i]->sprite.move(0.f, this->entities[i]->GetSpeed());
+  
         //checken of de enemy buiten het scherm is.
         if (this->entities[i]->sprite.getPosition().y > this->window->getSize().y)
         {

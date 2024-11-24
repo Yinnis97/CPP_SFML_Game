@@ -1,5 +1,10 @@
 #include "Entity.h"
 
+const float Entity::GetSpeed() const
+{
+    return this->Speed;
+}
+
 const int Entity::GetHealth() const
 {
     return this->Health;

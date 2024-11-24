@@ -40,7 +40,6 @@ private:
 	Clock clock;
 
 	//Game Logic
-	float MoveSpeed;
 	float enemyspawntimer;
 	float enemyspawntimermax;
 	int maxenemies;
