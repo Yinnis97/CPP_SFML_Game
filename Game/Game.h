@@ -64,7 +64,6 @@ private:
 	void initwindow();
 	void initbackground();
 	
-
 public:
 
 	//Constructor
