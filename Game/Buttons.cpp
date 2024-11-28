@@ -4,7 +4,7 @@ void Buttons::initrestart()
 {
     this->Restart.setFillColor(Color::Transparent);
     this->Restart.setOutlineThickness(8.f);
-    this->Restart.setOutlineColor(Color::Yellow);
+    this->Restart.setOutlineColor(Color::ButtonColor);
     this->Restart.setSize(Vector2f(220.f, 50.f));
     this->mouseHeldRestart = false;
     this->ButtonRestartPressed = false;
@@ -15,7 +15,7 @@ void Buttons::initquit()
 {
     this->Quit.setFillColor(Color::Transparent);
     this->Quit.setOutlineThickness(8.f);
-    this->Quit.setOutlineColor(Color::Yellow);
+    this->Quit.setOutlineColor(Color::ButtonColor);
     this->Quit.setSize(Vector2f(220.f, 50.f));
     this->mouseHeldQuit = false;
 }
@@ -78,7 +78,7 @@ void Buttons::updateRestart(Vector2f mousePosView, RenderTarget& target)
             this->SetButtonRestartPressed(true);
         }
         this->mouseHeldRestart = false;
-        this->Restart.setOutlineColor(Color::Yellow);
+        this->Restart.setOutlineColor(Color::ButtonColor);
     }
 }
 
@@ -105,7 +105,7 @@ void Buttons::updateQuit(Vector2f mousePosView, RenderTarget& target)
             this->SetButtonQuitPressed(true);
         }
         this->mouseHeldQuit = false;
-        this->Quit.setOutlineColor(Color::Yellow);
+        this->Quit.setOutlineColor(Color::ButtonColor);
     }
 }
 

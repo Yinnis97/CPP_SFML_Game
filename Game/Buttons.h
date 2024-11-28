@@ -3,6 +3,9 @@
 #include <sstream> 
 #include <string>  
 #include "SFML\Graphics.hpp"
+
+#define ButtonColor Blue
+
 using namespace std;
 using namespace sf;
 

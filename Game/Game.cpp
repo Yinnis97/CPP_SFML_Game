@@ -25,15 +25,15 @@ void Game::initwindow()
 
 void Game::initbackground()
 {
-    if (!this->backgroundTexture.loadFromFile("Textures/background.png"))
+    if (!this->BackgroundShader.loadFromFile("Shaders/Space_shader.frag", sf::Shader::Fragment))
     {
-        cerr << "Error: Kon Background Texture Niet Laden!" << endl;
+        std::cerr << "Error Loading Background Shader" << std::endl;
     }
-    this->background.setTexture(this->backgroundTexture);
 
-    float X = static_cast<float>(this->window->getSize().x) / this->backgroundTexture.getSize().x;
-    float Y = static_cast<float>(this->window->getSize().y) / this->backgroundTexture.getSize().y;
-    this->background.setScale(X, Y);
+    this->BackgroundShader.setUniform("iResolution", this->GetWindowSize());
+
+    this->Background.setSize(this->GetWindowSize());
+    this->Background.setFillColor(sf::Color::White);
 }
 
 
@@ -83,6 +83,11 @@ const bool Game::GetBossTimeInterval()
     return false;
 }
 
+const Vector2f Game::GetWindowSize()
+{
+    return static_cast<Vector2f>(this->window->getSize());
+}
+
 //Functions 
 
 void Game::pollEvents()
@@ -104,6 +109,10 @@ void Game::pollEvents()
             if (this->ev.key.code == Keyboard::LAlt)
             {
                 this->toggleFullscreen();
+            }
+            if (this->ev.key.code == Keyboard::B)
+            {
+                entities.push_back(new Boss(*this->window, 'B', 10, 5.0f));
             }
             break;
         }
@@ -376,8 +385,13 @@ void Game::update()
     this->pollEvents();
     this->GetupdateMousePos();
     this->text.updatePlayerStatsText(this->player.GetCoins(), this->player.GetHealth(), this->player.GetEnemiesKilled(), this->player.GetBossesKilled(), this->player.GetFriendsKilled(), this->endgame, *this->window);
-    this->text.updateText(this->player.GetCoins(), this->player.GetHealth(), this->endgame, *this->window, highscores);
-    
+    this->text.updateText(this->player.GetCoins(), this->player.GetHealth(), this->endgame, *this->window, this->highscores);
+
+    //Get the current time for the shader.
+    this->TimeVar = clock_Shader.getElapsedTime().asSeconds();
+    this->BackgroundShader.setUniform("iTime", TimeVar);
+
+
     if (this->EnemyClicked)
     {
         this->text.updateClickText(*this->window, this->GetupdateMousePos());
@@ -427,7 +441,7 @@ void Game::update()
 
 void Game::renderbackground(RenderTarget& target)
 {
-    target.draw(background);
+    this->window->draw(this->Background, &this->BackgroundShader);
 }
 
 void Game::renderEnemies(RenderTarget& target)
@@ -445,7 +459,7 @@ void Game::render()
     //Eerst render background en text als laatste.
     this->window->clear();
   
-    this->renderbackground(*this->window);
+   this->renderbackground(*this->window);
 
     if (this->getendgame() == false) 
     {

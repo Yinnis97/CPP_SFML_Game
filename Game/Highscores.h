@@ -10,7 +10,7 @@ using namespace std;
 class Highscores
 {
 private:
-    vector<unsigned> highscores;
+    vector<int> highscores;
     const string highscoreFile = "Resources/highscores.txt";
     int maxHighscores;
     bool ScoreAdded;
@@ -25,10 +25,10 @@ public:
     void SetScoreAdded(bool Added);
     void loadHighscores();
     void saveHighscores();
-    void addHighscore(unsigned coins);
-    void updatehighscores(unsigned coins);
+    void addHighscore(int coins);
+    void updatehighscores(int coins);
 
-    const vector<unsigned>& getHighscores() const;
+    const vector<int>& getHighscores() const;
 };
 
 //Eerst de scores laden zodat we de oude scores krijgen anders reseten we telkens keer.

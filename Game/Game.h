@@ -38,6 +38,7 @@ private:
 
 	//Clock
 	Clock clock;
+	Clock clock_Shader;
 
 	//Game Logic
 	float enemyspawntimer;
@@ -48,6 +49,13 @@ private:
 	bool deleted;
 	bool BossActive;
 	bool EnemyClicked;
+	float TimeVar;
+
+	//Background Variables
+	RectangleShape Background;
+
+	//Shader
+	Shader BackgroundShader;
 
 	//Game Objects
 	TextClass text;
@@ -76,7 +84,7 @@ public:
 	const bool getendgame() const;
 	const Vector2f GetupdateMousePos();
 	const bool GetBossTimeInterval();
-
+	const Vector2f GetWindowSize();
 	//Functions
 	void pollEvents();
 	void toggleFullscreen();

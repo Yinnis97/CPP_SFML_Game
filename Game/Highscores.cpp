@@ -55,7 +55,7 @@ void Highscores::saveHighscores()
     file.close();
 }
 
-void Highscores::addHighscore(unsigned coins)
+void Highscores::addHighscore(int coins)
 {
     if (this->ScoreAdded == false)
     {
@@ -74,13 +74,13 @@ void Highscores::addHighscore(unsigned coins)
    
 }
 
-void Highscores::updatehighscores(unsigned coins)
+void Highscores::updatehighscores(int coins)
 {
     this->addHighscore(coins);
     this->saveHighscores();
 }
 
-const std::vector<unsigned>& Highscores::getHighscores() const
+const std::vector<int>& Highscores::getHighscores() const
 {
     return this->highscores;
 }

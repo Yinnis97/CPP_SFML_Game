@@ -25,52 +25,52 @@ void TextClass::inittext()
     //Coins And HP
     this->UItextCoinsHP.setFont(this->font);
     this->UItextCoinsHP.setCharacterSize(24);
-    this->UItextCoinsHP.setFillColor(Color::Yellow);
+    this->UItextCoinsHP.setFillColor(Color::TextColor);
     this->UItextCoinsHP.setString("");
     //Rechts
     this->UIVersion.setFont(this->font);
     this->UIVersion.setCharacterSize(24);
-    this->UIVersion.setFillColor(Color::Yellow);
+    this->UIVersion.setFillColor(Color::TextColor);
     this->UIVersion.setString("");
     //Restart
     this->UIRestart.setFont(this->font);
     this->UIRestart.setCharacterSize(50);
-    this->UIRestart.setFillColor(Color::Yellow);
+    this->UIRestart.setFillColor(Color::TextColor);
     this->UIRestart.setString("");
     //Game Over
     this->UIGameOver.setFont(this->font);
     this->UIGameOver.setCharacterSize(100);
-    this->UIGameOver.setFillColor(Color::Yellow);
+    this->UIGameOver.setFillColor(Color::TextColor);
     this->UIGameOver.setString("");
     //Quit
     this->UIQuit.setFont(this->font);
     this->UIQuit.setCharacterSize(50);
-    this->UIQuit.setFillColor(Color::Yellow);
+    this->UIQuit.setFillColor(Color::TextColor);
     this->UIQuit.setString("");
     //Highscores
     this->UIHighscores.setFont(this->font);
     this->UIHighscores.setCharacterSize(50);
-    this->UIHighscores.setFillColor(Color::Yellow);
+    this->UIHighscores.setFillColor(Color::TextColor);
     this->UIHighscores.setString("");
     //Enemy clicked
     this->EnemyClicked.setFont(this->font);
     this->EnemyClicked.setCharacterSize(20);
-    this->EnemyClicked.setFillColor(Color::Yellow);
+    this->EnemyClicked.setFillColor(Color::TextColor);
     this->EnemyClicked.setString("");
     //EnemiesKilled
     this->EnemiesKilled.setFont(this->font);
     this->EnemiesKilled.setCharacterSize(24);
-    this->EnemiesKilled.setFillColor(Color::Yellow);
+    this->EnemiesKilled.setFillColor(Color::TextColor);
     this->EnemiesKilled.setString("");
     //BossesKilled
     this->BossesKilled.setFont(this->font);
     this->BossesKilled.setCharacterSize(24);
-    this->BossesKilled.setFillColor(Color::Yellow);
+    this->BossesKilled.setFillColor(Color::TextColor);
     this->BossesKilled.setString("");
     //FriendsKilled
     this->FriendsKilled.setFont(this->font);
     this->FriendsKilled.setCharacterSize(24);
-    this->FriendsKilled.setFillColor(Color::Yellow);
+    this->FriendsKilled.setFillColor(Color::TextColor);
     this->FriendsKilled.setString("");
 }
 
@@ -118,7 +118,6 @@ void TextClass::updatePlayerStatsText(int coins, int health, int EnemiesKilled, 
         ss1 << "Score: " << coins;
         this->UItextCoinsHP.setString(ss1.str());
         this->UItextCoinsHP.setCharacterSize(40);
-        this->UItextCoinsHP.setFillColor(Color::Yellow);
 
         FloatRect textBounds1 = this->UItextCoinsHP.getLocalBounds();
         this->UItextCoinsHP.setPosition((windowWidth - textBounds1.width) / 2, (windowHeight / 2) + 85);

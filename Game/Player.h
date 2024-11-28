@@ -13,7 +13,6 @@ public:
 
 	Player();
 
-	
 	const int GetCoins();
 	const int GetHealth();
 	const int GetBossesKilled();

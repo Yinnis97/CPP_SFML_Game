@@ -4,7 +4,7 @@
 
 void Enemy::initEntity(RenderWindow& window)
 {
-    if (!this->Texture.loadFromFile("Textures/Entity1.png"))
+    if (!this->Texture.loadFromFile("Textures/Entity5.png"))
     {
         cerr << "Error: Kon Entity1 Texture Niet Laden!" << endl;
     }

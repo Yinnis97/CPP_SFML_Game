@@ -5,6 +5,8 @@
 #include <SFML/Graphics.hpp>
 #include "Highscores.h"
 
+#define TextColor Blue
+
 using namespace std;
 using namespace sf;
 
